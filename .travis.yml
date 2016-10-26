@@ -1,6 +1,6 @@
 {
-  "language": "java",
-  "group": "stable",
-  "dist": "precise",
-  "os": "windows"
+  language: "java",
+  script: "mvn install"
+  jdk:
+    - oraclejdk8
 }
