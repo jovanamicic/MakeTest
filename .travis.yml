@@ -6,4 +6,4 @@ jdk:
 services:
   - mysql
 before_script:
-- mysql -u root -e "GRANT ALL ON root.* TO 'root'@'localhost';"
+  - mysql -u root -e "GRANT ALL ON root.* TO 'root'@'localhost';"
