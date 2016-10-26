@@ -1,0 +1,39 @@
+body {
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: top center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed;
+}
+
+div {
+    text-align:center;
+}
+
+#transparentBox {
+    background-color: #ffffff;
+    border: 1px solid black;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    position: absolute;
+    width: 400px;
+    height: 500px;
+    z-index: 15;
+    top: 30%;
+    left: 75%;
+    margin: -100px 50px 50px -150px;
+    border-radius: 5px;
+}
+
+#formBox {
+    position: absolute;
+    width: 400px;
+    height: 500px;
+    top: 30%;
+    left: 75%;
+    z-index: 25;
+    margin: -100px 50px 50px -150px;
+    border-radius: 5px;
+}
+
