@@ -7,5 +7,5 @@ services:
   - mysql
 before_script:
 - mysql -u root -e "CREATE DATABASE root;"
-- mysql -u root -e "CREATE USER 'root'@'localhost' IDENTIFIED BY 'plavalaguna';"
-- mysql -u root -e "GRANT ALL ON root.* TO 'root'@'localhost';"
+- mysql -u root -e "CREATE USER 'root1'@'localhost' IDENTIFIED BY 'plavalaguna1';"
+- mysql -u root -e "GRANT ALL ON root1.* TO 'root1'@'localhost';"
