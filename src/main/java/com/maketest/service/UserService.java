@@ -1,5 +1,6 @@
 package com.maketest.service;
 
+import com.maketest.dto.UserDTO;
 import com.maketest.model.User;
 
 /**
@@ -7,4 +8,5 @@ import com.maketest.model.User;
  */
 public interface UserService {
     User findOne(int id);
+    UserDTO register (UserDTO newUser);
 }

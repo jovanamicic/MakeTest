@@ -13,7 +13,7 @@ public class IndexPageController {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String indexPage(){
-        return "home";
+        return "index";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
