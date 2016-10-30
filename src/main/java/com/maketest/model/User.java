@@ -2,6 +2,7 @@ package com.maketest.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,11 +33,37 @@ public class User implements Serializable{
     @Column (name = "profile_photo_relative_path", unique = false, nullable = true)
     private String profilePhotoRelativePath;
 
+    @Column (name = "token", unique = false, nullable = false)
+    private String token;
+
+    @Column (name = "token_expire_date", unique = false, nullable = false)
+    private Date tokenExpireDate;
+
     @Column (name = "activated", unique = false, nullable = false)
     private Boolean activated;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "userTests")
     private Set<Test> tests = new HashSet<Test>();
+
+    public User(){
+        this.activated = false;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Date getTokenExpireDate() {
+        return tokenExpireDate;
+    }
+
+    public void setTokenExpireDate(Date tokenExpireDate) {
+        this.tokenExpireDate = tokenExpireDate;
+    }
 
     public Integer getId() {
         return id;
@@ -111,6 +138,8 @@ public class User implements Serializable{
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", profilePhotoRelativePath='" + profilePhotoRelativePath + '\'' +
+                ", token='" + token + '\'' +
+                ", tokenExpireDate=" + tokenExpireDate +
                 ", activated=" + activated +
                 ", tests=" + tests +
                 '}';

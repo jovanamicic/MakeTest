@@ -13,7 +13,6 @@ public class UserConverter {
             return null;
 
         User retVal = new User();
-        retVal.setActivated(true);
         retVal.setEmail(userDto.getEmail());
         retVal.setFirstName(userDto.getFirstName());
         retVal.setLastName(userDto.getLastName());
