@@ -9,32 +9,52 @@ function registrationJSON(email, firstName, lastName, password) {
         "password" : password
     });
 }
-//TODO: Proveriti da li se email vec koristi
-//TODO: Validacija forme i za ostala polja
 $(document).on('click','#registerBtn', function () {
-
     if (flagForMatchingPsw == 1 && flagForExistingEmail == 1) {
 
         var email = $("#email").val();
         var fName = $("#firstName").val();
         var lName = $("#lastName").val();
         var psw = $("#pwd").val();
+        var pswR = $("#repeatPwd").val();
 
-        $.ajax({
-            type: "POST",
-            data: registrationJSON(email, fName, lName, psw),
-            contentType: "application/json",
-            url: "/registerNewUser",
-            success: function (data) {
-                toastr.info("Email with activation link is sent to your email address!");
-                setTimeout(function(){
-                    window.location.href = "index.html";
-                }, 2000);
-            },
-            error: function (e) {
-                alert('Error: ' + e);
-            }
-        });
+        var regexEmail = new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
+
+        if(fName == ""){
+            toastr.error("Please enter a first name!");
+        }
+        else if(lName == ""){
+            toastr.error("Please enter a last name!");
+        }
+        else if(email == ""){
+            toastr.error("Please enter an e-mail!");
+        }
+        else if(psw == ""){
+            toastr.error("Please enter a password!");
+        }
+        else if(pswR == ""){
+            toastr.error("Please enter a repeated password!");
+        }
+        else if(!regexEmail.test(email)){
+            toastr.error("Wrong email format!");
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                data: registrationJSON(email, fName, lName, psw),
+                contentType: "application/json",
+                url: "/registerNewUser",
+                success: function (data) {
+                    toastr.info("Email with activation link is sent to your email address!");
+                    setTimeout(function () {
+                        window.location.href = "index.html";
+                    }, 2000);
+                },
+                error: function (e) {
+                    alert('Error: ' + e);
+                }
+            });
+        }
     }
 })
 
