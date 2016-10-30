@@ -74,6 +74,17 @@ public class JPAUserService implements UserService {
         return retVal;
     }
 
+    @Override
+    public String checkIfEmailExists(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null){
+           return  "exists";
+        }
+        else{
+            return "not exists";
+        }
+    }
+
     /* Calculate expire date of token */
     private Date calculateExpiryDate(int expiryTimeInMinutes) {
         Calendar cal = Calendar.getInstance();

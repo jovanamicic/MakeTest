@@ -1,4 +1,5 @@
-var flagForMatchingPsw = -1;
+var flagForMatchingPsw = -1; //0 = not maching, 1 = matching
+var flagForExistingEmail = -1; // 0= already exists, 1 = does not exist
 
 function registrationJSON(email, firstName, lastName, password) {
     return JSON.stringify({
@@ -12,7 +13,7 @@ function registrationJSON(email, firstName, lastName, password) {
 //TODO: Validacija forme i za ostala polja
 $(document).on('click','#registerBtn', function () {
 
-    if (flagForMatchingPsw == 1) {
+    if (flagForMatchingPsw == 1 && flagForExistingEmail == 1) {
 
         var email = $("#email").val();
         var fName = $("#firstName").val();
@@ -25,10 +26,35 @@ $(document).on('click','#registerBtn', function () {
             contentType: "application/json",
             url: "/registerNewUser",
             success: function (data) {
-                toastr.info("You are sucessfully registrated!");
+                toastr.info("Email with activation link is sent to your email address!");
                 setTimeout(function(){
                     window.location.href = "index.html";
                 }, 2000);
+            },
+            error: function (e) {
+                alert('Error: ' + e);
+            }
+        });
+    }
+})
+
+$(document).on('blur',"#email",function () {
+    var email = $("#email").val();
+
+    if (email != ""){
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(email),
+            contentType: "application/json",
+            url: "/checkIfEmailExists",
+            success: function (data) {
+                if (data === "exists"){
+                    flagForExistingEmail = 0;
+                    toastr.error("Email addres "+ email+" is already using. Try with another one.");
+                }
+                else{
+                    flagForExistingEmail = 1;
+                }
             },
             error: function (e) {
                 alert('Error: ' + e);

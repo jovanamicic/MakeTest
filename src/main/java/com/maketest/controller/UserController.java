@@ -24,4 +24,11 @@ public class UserController {
         UserDTO user = userService.register(u);
         return new ResponseEntity<UserDTO>(user, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/checkIfEmailExists",method = RequestMethod.POST )
+    public String checkIfEmailExists (@RequestBody String email){
+        email = email.replace("\"","");
+        String retVal = userService.checkIfEmailExists(email);
+        return retVal;
+    }
 }
