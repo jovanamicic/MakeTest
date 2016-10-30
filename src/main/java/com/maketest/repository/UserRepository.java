@@ -12,5 +12,6 @@ import org.springframework.data.domain.Pageable;
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User,Integer> {
     Page<User> findAll (Pageable pegeable);
-    User findByEmail(String email);
+    User findByEmail (String email);
+    User findByToken (String token);
 }

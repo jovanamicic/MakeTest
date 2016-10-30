@@ -10,4 +10,5 @@ public interface UserService {
     User findOne(int id);
     UserDTO register (UserDTO newUser);
     String checkIfEmailExists(String email);
+    boolean activateUser(String token);
 }

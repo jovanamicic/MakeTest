@@ -85,6 +85,18 @@ public class JPAUserService implements UserService {
         }
     }
 
+    @Override
+    public boolean activateUser(String token) {
+        boolean retVal = false;
+        User user = userRepository.findByToken(token);
+        if (user != null){
+            user.setActivated(true);
+            userRepository.save(user);
+            retVal = true;
+        }
+        return retVal;
+    }
+
     /* Calculate expire date of token */
     private Date calculateExpiryDate(int expiryTimeInMinutes) {
         Calendar cal = Calendar.getInstance();
