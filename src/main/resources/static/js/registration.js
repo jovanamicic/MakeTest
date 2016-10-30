@@ -96,3 +96,9 @@ $(document).on('blur',"#repeatPwd",function () {
         toastr.error("Not matching passwords!");
     }
 })
+
+$(document).on('click','#loginLink',function () {
+    setTimeout(function () {
+        window.location.href = "index.html";
+    }, 1000);
+})

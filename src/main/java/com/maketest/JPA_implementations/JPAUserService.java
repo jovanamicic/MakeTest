@@ -29,19 +29,6 @@ public class JPAUserService implements UserService {
     @Autowired
     EmailService emailSender;
 
-    @Override
-    public User findOne(int id) {
-        User user = userRepository.findOne(id);
-        User retVal = null;
-
-        if(user!=null){
-            retVal = user;
-        }
-        else
-            throw new IllegalArgumentException("There is no data with id: " + id);
-        return retVal;
-    }
-
     /* Function saves user info in data base, generate token and send user activation link.*/
     @Override
     public UserDTO register(UserDTO newUser) {
@@ -72,6 +59,20 @@ public class JPAUserService implements UserService {
         }
         UserDTO retVal = UserConverter.UserToUserDTO(user);
         return retVal;
+    }
+
+    @Override
+    public UserDTO login(UserDTO userToRegister) {
+        UserDTO retVal = null;
+        User user = userRepository.findByEmailAndPassword(userToRegister.getEmail(),userToRegister.getPassword());
+        if (user != null){
+            retVal = UserConverter.UserToUserDTO(user);
+            return retVal;
+        }
+        else{
+            //TODO Here make own Exception
+            throw new IllegalArgumentException("User not found");
+        }
     }
 
     @Override
