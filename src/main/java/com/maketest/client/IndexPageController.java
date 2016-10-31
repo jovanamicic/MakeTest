@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 public class IndexPageController {
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String indexPage(){
         return "login";
     }
@@ -19,6 +19,11 @@ public class IndexPageController {
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registrationPage(){
         return "registration";
+    }
+
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public String homePage(){
+        return "home";
     }
 }
 

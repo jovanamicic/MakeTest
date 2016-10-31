@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * Created by Jovana Micic on 29-Oct-16.
  */
@@ -54,12 +56,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login-session", method = RequestMethod.POST)
-    public ResponseEntity<UserDTO> login(@RequestBody UserDTO userToLogin) {
+    public ResponseEntity<UserDTO> login(@RequestBody UserDTO userToLogin, HttpSession session) {
         UserDTO retVal = userService.login(userToLogin);
         if (retVal == null) {
-
             throw new UserNotFoundException(userToLogin.getEmail());
         }
+        session.setAttribute("user", retVal); //setting user on session
         return new ResponseEntity<UserDTO>(retVal, HttpStatus.OK);
     }
 }

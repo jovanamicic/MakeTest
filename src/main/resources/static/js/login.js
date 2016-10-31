@@ -27,9 +27,9 @@ $(document).on('click','#loginBtn', function () {
             url: "/login-session",
             success: function (data) {
                 console.log("Login: "+ data.email);
-            /*    setTimeout(function () {
-                    window.location.href = "login.html";
-                }, 2000); */
+                setTimeout(function () {
+                    window.location.href = "home";
+                }, 2000);
             },
             error: function (xhr, e) {
                 console.log(xhr.responseText);
