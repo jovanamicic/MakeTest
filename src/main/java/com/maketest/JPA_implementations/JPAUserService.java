@@ -5,6 +5,7 @@ import com.maketest.dto.UserDTO;
 import com.maketest.model.User;
 import com.maketest.repository.UserRepository;
 import com.maketest.service.EmailService;
+import com.maketest.service.MD5Hash;
 import com.maketest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,9 @@ public class JPAUserService implements UserService {
     /* Function saves user info in data base, generate token and send user activation link.*/
     @Override
     public UserDTO register(UserDTO newUser) {
-        //TODO: Uraditi enkripciju password-a
         User user = UserConverter.UserDTOToUser(newUser);
+        String hashedPassword = MD5Hash.getMD5(user.getPassword());
+        user.setPassword(hashedPassword);
         user.setProfilePhotoRelativePath("img/defaultUserPhoto.png");
 
         //Generating activation token
@@ -64,7 +66,8 @@ public class JPAUserService implements UserService {
     @Override
     public UserDTO login(UserDTO userToRegister) {
         UserDTO retVal = null;
-        User user = userRepository.findByEmailAndPassword(userToRegister.getEmail(),userToRegister.getPassword());
+        String hashedPassword = MD5Hash.getMD5(userToRegister.getPassword());
+        User user = userRepository.findByEmailAndPassword(userToRegister.getEmail(),hashedPassword);
         if (user != null){
             retVal = UserConverter.UserToUserDTO(user);
             return retVal;
