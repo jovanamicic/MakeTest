@@ -43,7 +43,7 @@ $(document).on('click','#registerBtn', function () {
                 type: "POST",
                 data: registrationJSON(email, fName, lName, psw),
                 contentType: "application/json",
-                url: "/registerNewUser",
+                url: "/user-registration",
                 success: function (data) {
                     toastr.info("Email with activation link is sent to your email address!");
                     setTimeout(function () {
@@ -66,7 +66,7 @@ $(document).on('blur',"#email",function () {
             type: "POST",
             data: JSON.stringify(email),
             contentType: "application/json",
-            url: "/checkIfEmailExists",
+            url: "/user-email",
             success: function (data) {
                 if (data === "exists"){
                     flagForExistingEmail = 0;

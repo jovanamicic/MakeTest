@@ -24,17 +24,17 @@ $(document).on('click','#loginBtn', function () {
             type: "POST",
             data: loginJSON(email, psw),
             contentType: "application/json",
-            url: "/login",
+            url: "/login-session",
             success: function (data) {
                 console.log("Login: "+ data.email);
             /*    setTimeout(function () {
                     window.location.href = "index.html";
                 }, 2000); */
             },
-            error: function (e) {
+            error: function (xhr, e) {
+                console.log(xhr.responseText);
                 toastr.error("Wrong email or password. Please try again.");
                 $("#pwd").val("");
-
             }
         });
 

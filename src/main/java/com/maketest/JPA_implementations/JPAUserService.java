@@ -46,7 +46,7 @@ public class JPAUserService implements UserService {
 
         //Sending email
         String subject = "Activation link";
-        String confirmationUrl = "/registrationConfirm.html?token=" + token;
+        String confirmationUrl = "/registration-confirmation?token=" + token;
         String text = "To activate your account click here: http://localhost:8080" + confirmationUrl
                 + "\n Link for activation will expire in 24 hours.\n Make Test website.";
 
@@ -70,8 +70,7 @@ public class JPAUserService implements UserService {
             return retVal;
         }
         else{
-            //TODO Here make own Exception
-            throw new IllegalArgumentException("User not found");
+           return null;
         }
     }
 

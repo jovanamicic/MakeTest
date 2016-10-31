@@ -1,6 +1,7 @@
 package com.maketest.controller;
 
 import com.maketest.dto.UserDTO;
+import com.maketest.exceptions.UserNotFoundException;
 import com.maketest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -17,13 +18,13 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/registerNewUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/user-registration", method = RequestMethod.POST)
     public ResponseEntity<UserDTO> registerNewUser(@RequestBody UserDTO u) {
         UserDTO user = userService.register(u);
         return new ResponseEntity<UserDTO>(user, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/checkIfEmailExists", method = RequestMethod.POST)
+    @RequestMapping(value = "/user-email", method = RequestMethod.POST)
     public String checkIfEmailExists(@RequestBody String email) {
         email = email.replace("\"", "");
         String retVal = userService.checkIfEmailExists(email);
@@ -34,7 +35,7 @@ public class UserController {
     * Function checks if token exists in data base.
     * If exists, user profile is activated and user is redirected to login page.
     * */
-    @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
+    @RequestMapping(value = "/registration-confirmation", method = RequestMethod.GET)
     public ResponseEntity<String> registrationConfirm(@RequestParam String token) {
         boolean result = false;
         if (token != null) {
@@ -45,14 +46,12 @@ public class UserController {
         return new ResponseEntity<String>(headers, HttpStatus.SEE_OTHER);
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login-session", method = RequestMethod.POST)
     public ResponseEntity<UserDTO> login(@RequestBody UserDTO userToLogin) {
-        try {
-            UserDTO retVal = userService.login(userToLogin);
-            return new ResponseEntity<UserDTO>(retVal, HttpStatus.OK);
-        } catch (Exception e) {
-            //TODO When I catch execption, then return Not found status?
-            return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
+        UserDTO retVal = userService.login(userToLogin);
+        if (retVal == null) {
+            throw new UserNotFoundException(userToLogin.getEmail());
         }
+        return new ResponseEntity<UserDTO>(retVal, HttpStatus.OK);
     }
 }
