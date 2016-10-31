@@ -28,7 +28,7 @@ $(document).on('click','#loginBtn', function () {
             success: function (data) {
                 console.log("Login: "+ data.email);
             /*    setTimeout(function () {
-                    window.location.href = "index.html";
+                    window.location.href = "login.html";
                 }, 2000); */
             },
             error: function (xhr, e) {

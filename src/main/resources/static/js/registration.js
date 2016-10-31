@@ -47,7 +47,7 @@ $(document).on('click','#registerBtn', function () {
                 success: function (data) {
                     toastr.info("Email with activation link is sent to your email address!");
                     setTimeout(function () {
-                        window.location.href = "index.html";
+                        window.location.href = "login.html";
                     }, 2000);
                 },
                 error: function (e) {
@@ -99,6 +99,6 @@ $(document).on('blur',"#repeatPwd",function () {
 
 $(document).on('click','#loginLink',function () {
     setTimeout(function () {
-        window.location.href = "index.html";
+        window.location.href = "login.html";
     }, 1000);
 })

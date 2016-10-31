@@ -49,7 +49,7 @@ public class UserController {
         userService.activateUser(token);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "http://localhost:8080/index.html");
+        headers.add("Location", "http://localhost:8080/login.html");
         return new ResponseEntity<String>(headers, HttpStatus.SEE_OTHER);
     }
 
@@ -57,6 +57,7 @@ public class UserController {
     public ResponseEntity<UserDTO> login(@RequestBody UserDTO userToLogin) {
         UserDTO retVal = userService.login(userToLogin);
         if (retVal == null) {
+
             throw new UserNotFoundException(userToLogin.getEmail());
         }
         return new ResponseEntity<UserDTO>(retVal, HttpStatus.OK);
