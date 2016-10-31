@@ -19,7 +19,23 @@ public class RestResponseEntitiyExceptionHandler extends ResponseEntityException
         String email = e.getEmail();
         long timestamp = System.currentTimeMillis();
         Error error = new Error(1,"User not found","User with email: "+email+" and password not found.", timestamp);
-        System.out.println("User with email: "+email+" not found.");
+        return new ResponseEntity<Error>(error, HttpStatus.NOT_FOUND);
+    }
+
+
+    @ExceptionHandler({UserEmailNotFoundException.class})
+    public ResponseEntity<Error> userEmailNotFound (UserEmailNotFoundException e){
+        String email = e.getEmail();
+        long timestamp = System.currentTimeMillis();
+        Error error = new Error(1,"User email not found","Email address: "+email+" not found.", timestamp);
+        return new ResponseEntity<Error>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({UserTokenNotFoundException.class})
+    public ResponseEntity<Error> userTokenNotFoundException (UserTokenNotFoundException e){
+        String id = e.getId();
+        long timestamp = System.currentTimeMillis();
+        Error error = new Error(1,"Token not found","Token: "+ id +" not found.", timestamp);
         return new ResponseEntity<Error>(error, HttpStatus.NOT_FOUND);
     }
 }

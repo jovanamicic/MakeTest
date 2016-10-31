@@ -1,7 +1,9 @@
 package com.maketest.controller;
 
 import com.maketest.dto.UserDTO;
+import com.maketest.exceptions.UserEmailNotFoundException;
 import com.maketest.exceptions.UserNotFoundException;
+import com.maketest.exceptions.UserTokenNotFoundException;
 import com.maketest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +30,9 @@ public class UserController {
     public String checkIfEmailExists(@RequestBody String email) {
         email = email.replace("\"", "");
         String retVal = userService.checkIfEmailExists(email);
+        if (retVal == null){
+            throw new UserEmailNotFoundException(email);
+        }
         return retVal;
     }
 
@@ -39,8 +44,10 @@ public class UserController {
     public ResponseEntity<String> registrationConfirm(@RequestParam String token) {
         boolean result = false;
         if (token != null) {
-            userService.activateUser(token);
+            throw new UserTokenNotFoundException(token);
         }
+        userService.activateUser(token);
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "http://localhost:8080/index.html");
         return new ResponseEntity<String>(headers, HttpStatus.SEE_OTHER);

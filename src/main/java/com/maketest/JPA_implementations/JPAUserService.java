@@ -52,7 +52,6 @@ public class JPAUserService implements UserService {
         String text = "To activate your account click here: http://localhost:8080" + confirmationUrl
                 + "\n Link for activation will expire in 24 hours.\n Make Test website.";
 
-
         try {
             emailSender.send(user.getEmail(), subject, text);
         } catch (MessagingException e) {
