@@ -5,7 +5,9 @@ makeTest.config(['$routeProvider',function ($routeProvider) {
             templateUrl : 'html/homePage.html'
         })
         .when('/myProfile',{
-            templateUrl : "html/myProfile.html"
+            templateUrl : "html/myProfile.html",
+            controller : 'UserController',
+            controllerAs : 'user'
         })
         .when('/home',{
             templateUrl : "html/homePage.html"
