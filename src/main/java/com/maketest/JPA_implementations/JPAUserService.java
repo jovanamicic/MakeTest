@@ -34,8 +34,8 @@ public class JPAUserService implements UserService {
     @Override
     public UserDTO register(UserDTO newUser) {
         User user = UserConverter.UserDTOToUser(newUser);
-        String hashedPassword = MD5Hash.getMD5(user.getPassword());
-        user.setPassword(hashedPassword);
+     //   String hashedPassword = MD5Hash.getMD5(user.getPassword());
+     //   user.setPassword(hashedPassword);
         user.setProfilePhotoRelativePath("img/defaultUserPhoto.png");
 
         //Generating activation token
@@ -48,7 +48,7 @@ public class JPAUserService implements UserService {
 
         //Sending email
         String subject = "Activation link";
-        String confirmationUrl = "/registration-confirmation?token=" + token;
+        String confirmationUrl = "/api/user/registration-confirmation?token=" + token;
         String text = "To activate your account click here: http://localhost:8080" + confirmationUrl
                 + "\n Link for activation will expire in 24 hours.\n Make Test website.";
 
@@ -65,8 +65,8 @@ public class JPAUserService implements UserService {
     @Override
     public UserDTO login(UserDTO userToRegister) {
         UserDTO retVal = null;
-        String hashedPassword = MD5Hash.getMD5(userToRegister.getPassword());
-        User user = userRepository.findByEmailAndPassword(userToRegister.getEmail(),hashedPassword);
+      //  String hashedPassword = MD5Hash.getMD5(userToRegister.getPassword());
+        User user = userRepository.findByEmailAndPassword(userToRegister.getEmail(),userToRegister.getPassword());
         if (user != null){
             retVal = UserConverter.UserToUserDTO(user);
             return retVal;

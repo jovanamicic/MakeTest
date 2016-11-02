@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpSession;
  * Created by Jovana Micic on 29-Oct-16.
  */
 @RestController
+@RequestMapping(value = "/api/user")
 public class UserController {
 
     @Autowired
@@ -44,8 +46,7 @@ public class UserController {
     * */
     @RequestMapping(value = "/registration-confirmation", method = RequestMethod.GET)
     public ResponseEntity<String> registrationConfirm(@RequestParam String token) {
-        boolean result = false;
-        if (token != null) {
+        if (token == null) {
             throw new UserTokenNotFoundException(token);
         }
         userService.activateUser(token);

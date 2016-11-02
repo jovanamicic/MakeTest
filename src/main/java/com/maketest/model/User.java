@@ -45,6 +45,17 @@ public class User implements Serializable{
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "userTests")
     private Set<Test> tests = new HashSet<Test>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
+
+    public Set<UserAuthority> getUserAuthorities() {
+        return userAuthorities;
+    }
+
+    public void setUserAuthorities(Set<UserAuthority> userAuthorities) {
+        this.userAuthorities = userAuthorities;
+    }
+
     public User(){
         this.activated = false;
     }
@@ -142,6 +153,7 @@ public class User implements Serializable{
                 ", tokenExpireDate=" + tokenExpireDate +
                 ", activated=" + activated +
                 ", tests=" + tests +
+                ", userAuthorities=" + userAuthorities +
                 '}';
     }
 }

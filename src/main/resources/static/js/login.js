@@ -24,7 +24,7 @@ $(document).on('click','#loginBtn', function () {
             type: "POST",
             data: loginJSON(email, psw),
             contentType: "application/json",
-            url: "/login-session",
+            url: "/api/user/login-session",
             success: function (data) {
                 console.log("Login: "+ data.email);
                 setTimeout(function () {
