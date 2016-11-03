@@ -1,6 +1,7 @@
 package com.maketest.service;
 
 import com.maketest.dto.UserDTO;
+import com.maketest.dto.UserProfileDTO;
 import com.maketest.model.User;
 
 /**
@@ -11,4 +12,5 @@ public interface UserService {
     UserDTO login (UserDTO userToRegister);
     String checkIfEmailExists(String email);
     boolean activateUser(String token);
+    UserProfileDTO getUserProfile(UserDTO loggedUser);
 }

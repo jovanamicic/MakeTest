@@ -1,6 +1,7 @@
 angular.module('makeTest.services').factory('userService',function($http){
     var service = {
-        logout : logout
+        logout : logout,
+        showUser : showUser
     }
     return service;
 
@@ -8,4 +9,8 @@ angular.module('makeTest.services').factory('userService',function($http){
     function logout() {
         return $http.get(apiRoot+'user/logout');  //-> odavde gadja rest funckiju u UserController
     };
+
+    function showUser() {
+        return $http.get(apiRoot+'user/userProfile');
+    }
 })

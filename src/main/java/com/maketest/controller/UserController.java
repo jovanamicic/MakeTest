@@ -1,6 +1,7 @@
 package com.maketest.controller;
 
 import com.maketest.dto.UserDTO;
+import com.maketest.dto.UserProfileDTO;
 import com.maketest.exceptions.UserEmailNotFoundException;
 import com.maketest.exceptions.UserNotFoundException;
 import com.maketest.exceptions.UserTokenNotFoundException;
@@ -65,4 +66,21 @@ public class UserController {
         session.setAttribute("user", retVal); //setting user on session
         return new ResponseEntity<UserDTO>(retVal, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ResponseEntity<UserDTO> logout(HttpSession session) {
+        session.invalidate();
+        return new ResponseEntity<UserDTO>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/userProfile", method = RequestMethod.GET)
+    public ResponseEntity<UserProfileDTO> userProfile(HttpSession session){
+        UserDTO loggedUser = (UserDTO) session.getAttribute("user");
+        UserProfileDTO retVal = userService.getUserProfile(loggedUser);
+        if (retVal == null) {
+            throw new UserNotFoundException(loggedUser.getEmail());
+        }
+        return new ResponseEntity<UserProfileDTO>(retVal, HttpStatus.OK);
+    }
+
 }

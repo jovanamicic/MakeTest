@@ -11,10 +11,22 @@ function UserController($location, $routeParams, userService){
 
     user.logout = function () {
         userService.logout().success(function (data) {  //-> poziva funkciju iz service.user.js
-            alert("Success");
+            setTimeout(function () {
+                window.location.href = "login";
+            }, 2000);
         }).error(function () {
             //user.errorMessage = "Error";  -> ne znam gde se implementira
             alert("Error");
         });
+    }
+
+    user.showUser = function(){
+        userService.showUser().success(function (data) {
+            $('#userPhoto').attr("src",data.profilePhotoRelativePath);
+            $('#userName').text(data.firstName+" "+data.lastName);
+            $('#userEmail').text(data.email);
+        }).error(function () {
+            alert("Error");
+        })
     }
 }

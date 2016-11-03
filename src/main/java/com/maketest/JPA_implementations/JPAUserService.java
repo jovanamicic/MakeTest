@@ -2,6 +2,7 @@ package com.maketest.JPA_implementations;
 
 import com.maketest.converter.UserConverter;
 import com.maketest.dto.UserDTO;
+import com.maketest.dto.UserProfileDTO;
 import com.maketest.model.User;
 import com.maketest.repository.UserRepository;
 import com.maketest.service.EmailService;
@@ -96,6 +97,14 @@ public class JPAUserService implements UserService {
             userRepository.save(user);
             retVal = true;
         }
+        return retVal;
+    }
+
+    @Override
+    public UserProfileDTO getUserProfile(UserDTO loggedUser) {
+        User user = UserConverter.UserDTOToUser(loggedUser);
+        User dbUser = userRepository.findByEmail(user.getEmail());
+        UserProfileDTO retVal = UserConverter.userToUserProfileDTO(dbUser);
         return retVal;
     }
 
