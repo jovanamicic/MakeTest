@@ -1,4 +1,4 @@
-package com.maketest.service;
+package com.maketest.service_implementations;
 
 import com.maketest.model.User;
 import com.maketest.model.UserAuthority;

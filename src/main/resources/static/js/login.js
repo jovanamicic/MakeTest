@@ -24,9 +24,8 @@ $(document).on('click','#loginBtn', function () {
             type: "POST",
             data: loginJSON(email, psw),
             contentType: "application/json",
-            url: "/api/user/login-session",
-            success: function (data) {
-                console.log("Login: "+ data.email);
+            url: "/api/users/sessions",
+            success: function (data, xhr) {
                 setTimeout(function () {
                     window.location.href = "home";
                 }, 2000);

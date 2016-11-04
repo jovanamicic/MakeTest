@@ -38,4 +38,12 @@ public class RestResponseEntitiyExceptionHandler extends ResponseEntityException
         Error error = new Error(1,"Token not found","Token: "+ id +" not found.", timestamp);
         return new ResponseEntity<Error>(error, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler({ExpiredTokenException.class})
+    public ResponseEntity<Error> expiredTokenException (ExpiredTokenException e){
+        String id = e.getSessionToken();
+        long timestamp = System.currentTimeMillis();
+        Error error = new Error(1,"Token expired","Token: "+ id +" expired.", timestamp);
+        return new ResponseEntity<Error>(error, HttpStatus.NOT_FOUND);
+    }
 }

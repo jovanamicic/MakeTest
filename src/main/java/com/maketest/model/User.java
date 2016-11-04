@@ -48,6 +48,18 @@ public class User implements Serializable{
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
 
+    @ManyToOne
+    @JoinColumn(name="user_session", referencedColumnName = "session_id")
+    private Session userSession;
+
+    public Session getUserSession() {
+        return userSession;
+    }
+
+    public void setUserSession(Session userSession) {
+        this.userSession = userSession;
+    }
+
     public Set<UserAuthority> getUserAuthorities() {
         return userAuthorities;
     }

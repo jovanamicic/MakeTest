@@ -3,30 +3,33 @@
  */
 angular.module('makeTest.controllers').controller('UserController', UserController);
 
-//Cemu ovo sluzi?
-UserController.$inject = ['$location', '$routeParams','userService'];
+UserController.$inject = ['userService', '$cookieStore'];
 
-function UserController($location, $routeParams, userService){
-    var user = this;
+//$location, $routeParams
+function UserController(userService, $cookieStore){
+    var vm = this;
+    vm.user = {}
 
-    user.logout = function () {
-        userService.logout().success(function (data) {  //-> poziva funkciju iz service.user.js
+    $cookieStore.put('mtt', tokenString); //iz logine responsa location treba da se sacuva cookie -> prebacim login na angular
+
+    vm.logout = function () {
+        userService.logout().then(function (response) {
             setTimeout(function () {
                 window.location.href = "login";
             }, 2000);
-        }).error(function () {
+        }, function () {
             //user.errorMessage = "Error";  -> ne znam gde se implementira
             alert("Error");
         });
+    };
+
+    vm.showUser = function(){
+            userService.showUser().then(function (response) {
+                vm.data = response.data;
+            },function () {
+                alert("Error");
+            });
     }
 
-    user.showUser = function(){
-        userService.showUser().success(function (data) {
-            $('#userPhoto').attr("src",data.profilePhotoRelativePath);
-            $('#userName').text(data.firstName+" "+data.lastName);
-            $('#userEmail').text(data.email);
-        }).error(function () {
-            alert("Error");
-        })
-    }
+    //Nece biti izmena preko popup-a vec cu dodati input fields i btn save
 }

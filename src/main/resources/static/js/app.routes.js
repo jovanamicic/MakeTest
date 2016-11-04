@@ -1,4 +1,5 @@
-var makeTest = angular.module('makeTest.routes',['ngRoute']);
+( function(){
+    var makeTest = angular.module('makeTest.routes',['ngRoute']);
 makeTest.config(['$routeProvider',function ($routeProvider) {
     $routeProvider
         .when('/',{
@@ -19,3 +20,4 @@ makeTest.config(['$routeProvider',function ($routeProvider) {
            redirectTo : '/'
         });
 }]);
+     }) ()

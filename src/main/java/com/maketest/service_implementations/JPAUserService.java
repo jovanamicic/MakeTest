@@ -1,12 +1,13 @@
-package com.maketest.JPA_implementations;
+package com.maketest.service_implementations;
 
 import com.maketest.converter.UserConverter;
 import com.maketest.dto.UserDTO;
 import com.maketest.dto.UserProfileDTO;
+import com.maketest.model.Session;
 import com.maketest.model.User;
+import com.maketest.repository.SessionRepository;
 import com.maketest.repository.UserRepository;
-import com.maketest.service.EmailService;
-import com.maketest.service.MD5Hash;
+import com.maketest.utility.MD5Hash;
 import com.maketest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,19 +25,24 @@ import java.util.UUID;
 public class JPAUserService implements UserService {
 
     private static final int EXPIRATION = 60 * 24; //24 hours
+    private static final int SESSION_EXPIRATION = 60 ; //1 hour
+
 
     @Autowired
     UserRepository userRepository;
 
     @Autowired
-    EmailService emailSender;
+    SessionRepository sessionRepository;
+
+    @Autowired
+    EmailServiceImpl emailSender;
 
     /* Function saves user info in data base, generate token and send user activation link.*/
     @Override
     public UserDTO register(UserDTO newUser) {
         User user = UserConverter.UserDTOToUser(newUser);
-     //   String hashedPassword = MD5Hash.getMD5(user.getPassword());
-     //   user.setPassword(hashedPassword);
+        String hashedPassword = MD5Hash.getMD5(user.getPassword());
+        user.setPassword(hashedPassword);
         user.setProfilePhotoRelativePath("img/defaultUserPhoto.png");
 
         //Generating activation token
@@ -49,27 +55,37 @@ public class JPAUserService implements UserService {
 
         //Sending email
         String subject = "Activation link";
-        String confirmationUrl = "/api/user/registration-confirmation?token=" + token;
+        String confirmationUrl = "/api/users/activation?token=" + token;
         String text = "To activate your account click here: http://localhost:8080" + confirmationUrl
                 + "\n Link for activation will expire in 24 hours.\n Make Test website.";
 
-        try {
-            emailSender.send(user.getEmail(), subject, text);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-            System.out.println("Greksa prilikom slanja mejla");
-        }
-        UserDTO retVal = UserConverter.UserToUserDTO(user);
+        emailSender.send(user.getEmail(), subject, text);
+        UserDTO retVal = UserConverter.userToUserDTO(user);
         return retVal;
     }
 
     @Override
     public UserDTO login(UserDTO userToRegister) {
         UserDTO retVal = null;
-      //  String hashedPassword = MD5Hash.getMD5(userToRegister.getPassword());
-        User user = userRepository.findByEmailAndPassword(userToRegister.getEmail(),userToRegister.getPassword());
+        String hashedPassword = MD5Hash.getMD5(userToRegister.getPassword());
+        User user = userRepository.findByEmailAndPassword(userToRegister.getEmail(),hashedPassword);
         if (user != null){
-            retVal = UserConverter.UserToUserDTO(user);
+            Session userSession = user.getUserSession();
+            if(userSession == null) {
+                //creating user session
+                userSession = new Session();
+            }
+            String sessionToken = UUID.randomUUID().toString();
+            Date sessionExpire = calculateExpiryDate(SESSION_EXPIRATION);
+            userSession.setSessionExpire(sessionExpire);
+            userSession.setSessionToken(sessionToken);
+            sessionRepository.save(userSession);
+
+            //saving user session
+            user.setUserSession(userSession);
+            userRepository.save(user);
+
+            retVal = UserConverter.userToUserDTO(user);
             return retVal;
         }
         else{
@@ -101,11 +117,15 @@ public class JPAUserService implements UserService {
     }
 
     @Override
-    public UserProfileDTO getUserProfile(UserDTO loggedUser) {
-        User user = UserConverter.UserDTOToUser(loggedUser);
-        User dbUser = userRepository.findByEmail(user.getEmail());
-        UserProfileDTO retVal = UserConverter.userToUserProfileDTO(dbUser);
-        return retVal;
+    public UserProfileDTO getUserProfile(String sessionToken) {
+        Session s = sessionRepository.findBySessionToken(sessionToken);
+        User dbUser = userRepository.findByUserSession(s);
+        if (dbUser != null) {
+            return UserConverter.userToUserProfileDTO(dbUser);
+        }
+        else {
+            return null;
+        }
     }
 
     /* Calculate expire date of token */
@@ -115,5 +135,6 @@ public class JPAUserService implements UserService {
         cal.add(Calendar.MINUTE, expiryTimeInMinutes);
         return new Date(cal.getTime().getTime());
     }
+
 
 }

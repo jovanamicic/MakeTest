@@ -1,5 +1,6 @@
 package com.maketest.repository;
 
+import com.maketest.model.Session;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import com.maketest.model.User;
@@ -15,4 +16,5 @@ public interface UserRepository extends PagingAndSortingRepository<User,Integer>
     User findByEmail (String email);
     User findByToken (String token);
     User findByEmailAndPassword (String email, String password);
+    User findByUserSession(Session session);
 }

@@ -5,12 +5,12 @@ angular.module('makeTest.services').factory('userService',function($http){
     }
     return service;
 
-    //url to rest
     function logout() {
-        return $http.get(apiRoot+'user/logout');  //-> odavde gadja rest funckiju u UserController
+        return $http.get(apiRoot+'users/logout');  //-> odavde gadja rest funckiju u UserController
     };
 
     function showUser() {
-        return $http.get(apiRoot+'user/userProfile');
+        return $http.get(apiRoot+'users/userProfile');  //(headers:{mtt : $cookieStore.get('myFavorite')}, url)
     }
-})
+
+});

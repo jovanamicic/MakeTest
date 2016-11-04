@@ -1,4 +1,4 @@
-package com.maketest.JPA_implementations;
+package com.maketest.service_implementations;
 
 import com.maketest.model.Question;
 import com.maketest.repository.QuestionRepository;

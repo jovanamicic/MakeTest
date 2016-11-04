@@ -38,7 +38,7 @@ public class UserConverter {
         return retVal;
     }
 
-    public static UserDTO UserToUserDTO(User user) {
+    public static UserDTO userToUserDTO(User user) {
         if (user == null)
             return null;
 
@@ -47,6 +47,7 @@ public class UserConverter {
         retVal.setFirstName(user.getFirstName());
         retVal.setLastName(user.getLastName());
         retVal.setPassword(user.getPassword());
+        retVal.setUserSession(user.getUserSession());
 
         return retVal;
     }

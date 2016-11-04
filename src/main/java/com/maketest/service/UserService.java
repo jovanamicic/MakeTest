@@ -12,5 +12,5 @@ public interface UserService {
     UserDTO login (UserDTO userToRegister);
     String checkIfEmailExists(String email);
     boolean activateUser(String token);
-    UserProfileDTO getUserProfile(UserDTO loggedUser);
+    UserProfileDTO getUserProfile(String loggedUser);
 }

@@ -1,5 +1,6 @@
 package com.maketest.dto;
 
+import com.maketest.model.Session;
 import com.maketest.model.User;
 
 /**
@@ -10,16 +11,26 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String password;
+    private Session userSession;
 
     public UserDTO(){
 
     }
 
-    public UserDTO(String email, String firstName, String lastName, String password) {
+    public UserDTO(String email, String firstName, String lastName, String password, Session userSession) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+        this.userSession = userSession;
+    }
+
+    public Session getUserSession() {
+        return userSession;
+    }
+
+    public void setUserSession(Session userSession) {
+        this.userSession = userSession;
     }
 
     public String getEmail() {
@@ -61,6 +72,7 @@ public class UserDTO {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
+                ", userSession=" + userSession +
                 '}';
     }
 }
