@@ -12,7 +12,6 @@ import com.maketest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,7 +21,7 @@ import java.util.UUID;
  * Created by Jovana Micic on 25-Oct-16.
  */
 @Service
-public class JPAUserService implements UserService {
+public class UserServiceImplementation implements UserService {
 
     private static final int EXPIRATION = 60 * 24; //24 hours
     private static final int SESSION_EXPIRATION = 60 ; //1 hour
@@ -35,14 +34,11 @@ public class JPAUserService implements UserService {
     SessionRepository sessionRepository;
 
     @Autowired
-    EmailServiceImpl emailSender;
+    EmailServiceImplementation emailSender;
 
     /* Function saves user info in data base, generate token and send user activation link.*/
     @Override
-    public UserDTO register(UserDTO newUser) {
-        User user = UserConverter.UserDTOToUser(newUser);
-        String hashedPassword = MD5Hash.getMD5(user.getPassword());
-        user.setPassword(hashedPassword);
+    public User save(User user) {
         user.setProfilePhotoRelativePath("img/defaultUserPhoto.png");
 
         //Generating activation token
@@ -60,13 +56,11 @@ public class JPAUserService implements UserService {
                 + "\n Link for activation will expire in 24 hours.\n Make Test website.";
 
         emailSender.send(user.getEmail(), subject, text);
-        UserDTO retVal = UserConverter.userToUserDTO(user);
-        return retVal;
+        return user;
     }
 
     @Override
-    public UserDTO login(UserDTO userToRegister) {
-        UserDTO retVal = null;
+    public User login(UserDTO userToRegister) {
         String hashedPassword = MD5Hash.getMD5(userToRegister.getPassword());
         User user = userRepository.findByEmailAndPassword(userToRegister.getEmail(),hashedPassword);
         if (user != null){
@@ -85,8 +79,7 @@ public class JPAUserService implements UserService {
             user.setUserSession(userSession);
             userRepository.save(user);
 
-            retVal = UserConverter.userToUserDTO(user);
-            return retVal;
+            return user;
         }
         else{
            return null;
@@ -117,15 +110,9 @@ public class JPAUserService implements UserService {
     }
 
     @Override
-    public UserProfileDTO getUserProfile(String sessionToken) {
+    public com.maketest.model.User getUserProfile(String sessionToken) {
         Session s = sessionRepository.findBySessionToken(sessionToken);
-        User dbUser = userRepository.findByUserSession(s);
-        if (dbUser != null) {
-            return UserConverter.userToUserProfileDTO(dbUser);
-        }
-        else {
-            return null;
-        }
+        return userRepository.findByUserSession(s);
     }
 
     /* Calculate expire date of token */

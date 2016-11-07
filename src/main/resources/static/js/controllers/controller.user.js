@@ -3,14 +3,19 @@
  */
 angular.module('makeTest.controllers').controller('UserController', UserController);
 
-UserController.$inject = ['userService', '$cookieStore'];
+UserController.$inject = ['userService', '$cookieStore','$location','$scope'];
 
 //$location, $routeParams
-function UserController(userService, $cookieStore){
+function UserController(userService, $cookieStore,$location,$scope){
     var vm = this;
     vm.user = {}
 
-    $cookieStore.put('mtt', tokenString); //iz logine responsa location treba da se sacuva cookie -> prebacim login na angular
+    $scope.init = function (){
+        var loc = $location.absUrl();
+        loc = loc.split('=').pop();
+        console.log(loc)
+        $cookieStore.put('mtt', loc);
+    }
 
     vm.logout = function () {
         userService.logout().then(function (response) {
@@ -18,8 +23,7 @@ function UserController(userService, $cookieStore){
                 window.location.href = "login";
             }, 2000);
         }, function () {
-            //user.errorMessage = "Error";  -> ne znam gde se implementira
-            alert("Error");
+            console.log("Error");
         });
     };
 
@@ -27,7 +31,7 @@ function UserController(userService, $cookieStore){
             userService.showUser().then(function (response) {
                 vm.data = response.data;
             },function () {
-                alert("Error");
+                console.log("Error");
             });
     }
 

@@ -7,8 +7,10 @@ import com.maketest.exceptions.UserEmailNotFoundException;
 import com.maketest.exceptions.UserNotFoundException;
 import com.maketest.exceptions.UserTokenNotFoundException;
 import com.maketest.model.Session;
+import com.maketest.model.User;
 import com.maketest.service.SessionService;
 import com.maketest.service.UserService;
+import com.maketest.utility.MD5Hash;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -37,11 +39,19 @@ public class UserController {
     @Autowired
     SessionService sessionService;
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ResponseEntity<UserDTO> registerNewUser(@RequestBody UserDTO u) {
-        UserDTO user = userService.register(u);
-        return new ResponseEntity<UserDTO>(user, HttpStatus.OK);
+    /* Creating new user*/
+    @RequestMapping( method = RequestMethod.POST)
+    public ResponseEntity<?> registerNewUser(@RequestBody UserDTO u) {
+        User user = new User();
+        user.setEmail(u.getEmail());
+        user.setFirstName(u.getFirstName());
+        user.setLastName(u.getLastName());
+        String hashedPassword = MD5Hash.getMD5(u.getPassword());
+        user.setPassword(hashedPassword);
+        user = userService.save(user);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
+
 
     @RequestMapping(value = "/user-email", method = RequestMethod.POST)
     public String checkIfEmailExists(@RequestBody String email) {
@@ -59,22 +69,16 @@ public class UserController {
     * */
     @RequestMapping(value = "/activation", method = RequestMethod.GET)
     public ResponseEntity<String> registrationConfirm(@RequestParam String token) {
-        if (token == null) {
-            throw new UserTokenNotFoundException(token);
-        }
         userService.activateUser(token);
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "http://localhost:8080/login");
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
+        return new ResponseEntity<String>(headers, HttpStatus.SEE_OTHER);
     }
 
+    /* Creating new session for logged user.*/
     @RequestMapping(value = "/sessions", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody UserDTO userToLogin, UriComponentsBuilder uriBuilder) {
-        UserDTO retVal = userService.login(userToLogin);
-        if (retVal == null) {  //TODO exceptions move to service
-            throw new UserNotFoundException(userToLogin.getEmail());
-        }
+        User retVal = userService.login(userToLogin);
         String sessionToken = retVal.getUserSession().getSessionToken();
         URI location = uriBuilder.path("api/users/sessions/{token}").buildAndExpand(sessionToken).toUri();
         return ResponseEntity.created(location).build(); //creates resurs
@@ -84,29 +88,39 @@ public class UserController {
     public ResponseEntity<?> getToken(@PathVariable String token) {
         Session validToken = sessionService.getToken(token);
         if (validToken != null){
-            return new ResponseEntity<Session>(validToken, HttpStatus.OK);
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add("Location", "http://localhost:8080/home?mtt="+token);
+            return new ResponseEntity<Session>(validToken, httpHeaders, HttpStatus.SEE_OTHER);
         }
         else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-        //Logout means DELETEing /sessions/{token}
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public ResponseEntity<UserDTO> logout(HttpSession session) {
-        session.invalidate();
-        return new ResponseEntity<UserDTO>(HttpStatus.OK);
+    /*  Deleting session token after logging out.*/
+    @RequestMapping(value = "/sessions/{token}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> logout(@PathVariable String token)
+    {
+        Session session = sessionService.findBySessionToken(token);
+        if (session != null){
+            sessionService.remove(session.getId());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
+    /* Getting user profile. */
     @RequestMapping(value = "/userProfile", method = RequestMethod.GET)
     public ResponseEntity<UserProfileDTO> userProfile(@RequestHeader("mtt") String sessionToken) {
-            UserProfileDTO retVal = userService.getUserProfile(sessionToken);
-            if (retVal == null) {
-                throw new UserNotFoundException("not found");
+            User user = userService.getUserProfile(sessionToken);
+            if (user == null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<UserProfileDTO>(retVal, HttpStatus.OK);
+            return new ResponseEntity<>(new UserProfileDTO(user),HttpStatus.OK);
     }
 
-    //TODO implement POST /userProfile sending person
+    //TODO implement PUT /userProfile for updating user profile
 
 }

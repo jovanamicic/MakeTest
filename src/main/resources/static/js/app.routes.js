@@ -16,6 +16,9 @@ makeTest.config(['$routeProvider',function ($routeProvider) {
         .when('/createTest',{
             templateUrl : "html/createTest.html"
         })
+        .when('/login',{
+            templateUrl : "login.html"
+        })
         .otherwise({
            redirectTo : '/'
         });

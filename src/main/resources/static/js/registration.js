@@ -43,7 +43,8 @@ $(document).on('click','#registerBtn', function () {
                 type: "POST",
                 data: registrationJSON(email, fName, lName, psw),
                 contentType: "application/json",
-                url: "/api/users/registration",
+                dataType : "json",
+                url: "/api/users",
                 success: function (data) {
                     toastr.info("Email with activation link is sent to your email address!");
                     setTimeout(function () {

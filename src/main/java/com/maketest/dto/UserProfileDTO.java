@@ -1,21 +1,35 @@
 package com.maketest.dto;
 
+import com.maketest.model.User;
+
 /**
  * Created by Jovana Micic on 03-Nov-16.
  */
 public class UserProfileDTO {
+    private int id;
     private String firstName;
     private String lastName;
     private String email;
     private String profilePhotoRelativePath;
 
-    public UserProfileDTO(){}
+    public UserProfileDTO(User user){
+        this(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getProfilePhotoRelativePath());
+    }
 
-    public UserProfileDTO(String firstName, String lastName, String email, String profilePhotoRelativePath) {
+    public UserProfileDTO(int id, String firstName, String lastName, String email, String profilePhotoRelativePath) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.profilePhotoRelativePath = profilePhotoRelativePath;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {

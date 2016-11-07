@@ -1,4 +1,4 @@
-angular.module('makeTest.services').factory('userService',function($http){
+angular.module('makeTest.services').factory('userService',function($http,$cookieStore){
     var service = {
         logout : logout,
         showUser : showUser
@@ -6,11 +6,14 @@ angular.module('makeTest.services').factory('userService',function($http){
     return service;
 
     function logout() {
-        return $http.get(apiRoot+'users/logout');  //-> odavde gadja rest funckiju u UserController
+        return $http.delete(apiRoot+'users/sessions/'+ $cookieStore.get('mtt'));
     };
 
     function showUser() {
-        return $http.get(apiRoot+'users/userProfile');  //(headers:{mtt : $cookieStore.get('myFavorite')}, url)
-    }
+        url = apiRoot+'users/userProfile';
+        return $http.get(url,{
+            headers:{ "mtt" : $cookieStore.get('mtt')}
+        });
+    };
 
 });

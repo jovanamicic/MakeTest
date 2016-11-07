@@ -25,9 +25,11 @@ $(document).on('click','#loginBtn', function () {
             data: loginJSON(email, psw),
             contentType: "application/json",
             url: "/api/users/sessions",
-            success: function (data, xhr) {
+            success: function (res, status, xhr) {
+                var url = xhr.getResponseHeader("Location");
+                var token = url.split('/').pop();
                 setTimeout(function () {
-                    window.location.href = "home";
+                    window.location.href = "api/users/sessions/"+token;
                 }, 2000);
             },
             error: function (xhr, e) {

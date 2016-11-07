@@ -14,11 +14,7 @@ public class UserConverter {
             return null;
         }
         else {
-            UserProfileDTO retVal = new UserProfileDTO();
-            retVal.setEmail(user.getEmail());
-            retVal.setFirstName(user.getFirstName());
-            retVal.setLastName(user.getLastName());
-            retVal.setProfilePhotoRelativePath(user.getProfilePhotoRelativePath());
+            UserProfileDTO retVal = new UserProfileDTO(user.getId(),user.getFirstName(),user.getLastName(),user.getEmail(),user.getProfilePhotoRelativePath());
             return retVal;
         }
 
@@ -42,13 +38,7 @@ public class UserConverter {
         if (user == null)
             return null;
 
-        UserDTO retVal = new UserDTO();
-        retVal.setEmail(user.getEmail());
-        retVal.setFirstName(user.getFirstName());
-        retVal.setLastName(user.getLastName());
-        retVal.setPassword(user.getPassword());
-        retVal.setUserSession(user.getUserSession());
-
+        UserDTO retVal = new UserDTO(user.getId(),user.getEmail(),user.getFirstName(),user.getLastName(),user.getPassword(),user.getUserSession());
         return retVal;
     }
 }

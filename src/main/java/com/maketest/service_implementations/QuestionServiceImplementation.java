@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class JPAQuestionService implements QuestionService {
+public class QuestionServiceImplementation implements QuestionService {
 
     @Autowired
     QuestionRepository questionRepository;

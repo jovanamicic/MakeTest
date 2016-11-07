@@ -12,7 +12,7 @@ import java.util.Properties;
  * Created by Jovana Micic on 30-Oct-16.
  */
 @Component
-public class EmailServiceImpl implements EmailService{
+public class EmailServiceImplementation implements EmailService{
     public void send(String to, String subject, String body){
 
         String from = "kmj.it.girls@gmail.com";

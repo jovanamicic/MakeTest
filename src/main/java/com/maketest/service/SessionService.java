@@ -7,4 +7,6 @@ import com.maketest.model.Session;
  */
 public interface SessionService {
     Session getToken(String token);
+    Session findBySessionToken(String token);
+    void remove(int id);
 }

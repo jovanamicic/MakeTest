@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  * Created by Jovana Micic on 25-Oct-16.
  */
 @Service
-public class JPAResultService implements ResultService {
+public class ResultServiceImplementation implements ResultService {
 
     @Autowired
     ResultRepository resultRepository;
