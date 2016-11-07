@@ -121,6 +121,22 @@ public class UserController {
             return new ResponseEntity<>(new UserProfileDTO(user),HttpStatus.OK);
     }
 
-    //TODO implement PUT /userProfile for updating user profile
+    /* Method updates user data.*/
+    @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO u, @RequestHeader("mtt") String sessionToken){
+        User user = userService.getUserProfile(sessionToken);
+        if (user == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (u.getPassword() != null) {
+            String hashedPassword = MD5Hash.getMD5(u.getPassword());
+            user.setPassword(hashedPassword);
+        }
+        user.setFirstName(u.getFirstName());
+        user.setLastName(u.getLastName());
+
+        userService.update(user);
+        return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+    }
 
 }

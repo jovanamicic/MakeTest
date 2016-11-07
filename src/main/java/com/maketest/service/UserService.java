@@ -8,7 +8,9 @@ import com.maketest.model.User;
  * Created by Jovana Micic on 25-Oct-16.
  */
 public interface UserService {
+    User findOne(String email);
     User save(User user);
+    User update(User user);
     User login (UserDTO userToRegister);
     String checkIfEmailExists(String email);
     boolean activateUser(String token);

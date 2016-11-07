@@ -3,6 +3,7 @@ package com.maketest.service_implementations;
 import com.maketest.converter.UserConverter;
 import com.maketest.dto.UserDTO;
 import com.maketest.dto.UserProfileDTO;
+import com.maketest.exceptions.UserTokenNotFoundException;
 import com.maketest.model.Session;
 import com.maketest.model.User;
 import com.maketest.repository.SessionRepository;
@@ -35,6 +36,16 @@ public class UserServiceImplementation implements UserService {
 
     @Autowired
     EmailServiceImplementation emailSender;
+
+    @Override
+    public User findOne(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User update(User user){
+        return userRepository.save(user);
+    }
 
     /* Function saves user info in data base, generate token and send user activation link.*/
     @Override

@@ -3,6 +3,7 @@ var app = angular.module('makeTest',
     'makeTest.controllers',
     'makeTest.services',
     'makeTest.routes',
+    'makeTest.directives',
     'ngCookies'
 ]);
 

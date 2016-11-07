@@ -3,19 +3,19 @@
  */
 angular.module('makeTest.controllers').controller('UserController', UserController);
 
-UserController.$inject = ['userService', '$cookieStore','$location','$scope'];
+UserController.$inject = ['userService', '$cookieStore', '$location', '$scope'];
 
 //$location, $routeParams
-function UserController(userService, $cookieStore,$location,$scope){
+function UserController(userService, $cookieStore, $location, $scope) {
     var vm = this;
-    vm.user = {}
+    vm.user = {};
 
-    $scope.init = function (){
+    $scope.init = function () {
         var loc = $location.absUrl();
         loc = loc.split('=').pop();
-        console.log(loc)
+        console.log("cookie->"+loc);
         $cookieStore.put('mtt', loc);
-    }
+    };
 
     vm.logout = function () {
         userService.logout().then(function (response) {
@@ -27,13 +27,24 @@ function UserController(userService, $cookieStore,$location,$scope){
         });
     };
 
-    vm.showUser = function(){
-            userService.showUser().then(function (response) {
+    vm.showUser = function () {
+        console.log(vm.data);
+        console.log($cookieStore.get('mtt'));
+        userService.showUser().then(function (response) {
+            vm.data = response.data;
+        }, function () {
+            console.log("Error");
+        });
+    };
+
+    vm.update = function () {
+            userService.update(vm.data).then(function(response){
                 vm.data = response.data;
+                vm.data.password = "";
+                vm.data.repeatPassword = "";
+                toastr.success("Your profile is successfully updated.");
             },function () {
                 console.log("Error");
             });
-    }
-
-    //Nece biti izmena preko popup-a vec cu dodati input fields i btn save
+    };
 }
