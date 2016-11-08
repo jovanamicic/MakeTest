@@ -14,7 +14,9 @@ makeTest.config(['$routeProvider',function ($routeProvider) {
             templateUrl : "html/homePage.html"
         })
         .when('/createTest',{
-            templateUrl : "html/createTest.html"
+            templateUrl : "html/createTest.html",
+            controller : "TestController",
+            controllerAs : "test"
         })
         .when('/login',{
             templateUrl : "login.html"

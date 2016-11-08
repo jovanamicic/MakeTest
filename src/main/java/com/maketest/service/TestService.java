@@ -1,5 +1,6 @@
 package com.maketest.service;
 
+import com.maketest.dto.TestDTO;
 import com.maketest.model.Test;
 
 /**
@@ -7,4 +8,5 @@ import com.maketest.model.Test;
  */
 public interface TestService {
     Test findOne(int id);
+    Test save(Test test);
 }

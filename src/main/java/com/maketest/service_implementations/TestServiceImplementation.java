@@ -1,5 +1,6 @@
 package com.maketest.service_implementations;
 
+import com.maketest.dto.TestDTO;
 import com.maketest.model.Test;
 import com.maketest.repository.TestRepository;
 import com.maketest.service.TestService;
@@ -17,13 +18,13 @@ public class TestServiceImplementation implements TestService {
 
     @Override
     public Test findOne(int id) {
-        Test test = testRepository.findOne(id);
-        Test retVal = null;
-
-        if(test!=null)
-            retVal = test;
-        else
-            throw new IllegalArgumentException("There is no data with id: " + id);
-        return retVal;
+        return testRepository.findOne(id);
     }
+
+    @Override
+    public Test save(Test test) {
+        return testRepository.save(test);
+    }
+
+
 }

@@ -3,19 +3,20 @@
  */
 angular.module('makeTest.controllers').controller('UserController', UserController);
 
-UserController.$inject = ['userService', '$cookieStore', '$location', '$scope'];
+UserController.$inject = ['userService','$routeParams', '$cookies', '$location', '$scope'];
 
 //$location, $routeParams
-function UserController(userService, $cookieStore, $location, $scope) {
+function UserController(userService,$routeParams, $cookies, $location, $scope) {
     var vm = this;
     vm.user = {};
 
-    $scope.init = function () {
-        var loc = $location.absUrl();
+    vm.init = function () {
+        var loc = location.search.substring(1);
         loc = loc.split('=').pop();
+        $cookies.put('mtt', loc);  // -> Ne vidi $cookies
         console.log("cookie->"+loc);
-        $cookieStore.put('mtt', loc);
     };
+
 
     vm.logout = function () {
         userService.logout().then(function (response) {
@@ -28,8 +29,7 @@ function UserController(userService, $cookieStore, $location, $scope) {
     };
 
     vm.showUser = function () {
-        console.log(vm.data);
-        console.log($cookieStore.get('mtt'));
+
         userService.showUser().then(function (response) {
             vm.data = response.data;
         }, function () {

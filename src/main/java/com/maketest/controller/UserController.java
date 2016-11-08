@@ -41,7 +41,7 @@ public class UserController {
 
     /* Creating new user*/
     @RequestMapping( method = RequestMethod.POST)
-    public ResponseEntity<?> registerNewUser(@RequestBody UserDTO u) {
+    public ResponseEntity<UserDTO> registerNewUser(@RequestBody UserDTO u) {
         User user = new User();
         user.setEmail(u.getEmail());
         user.setFirstName(u.getFirstName());
@@ -49,7 +49,7 @@ public class UserController {
         String hashedPassword = MD5Hash.getMD5(u.getPassword());
         user.setPassword(hashedPassword);
         user = userService.save(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);
     }
 
 
