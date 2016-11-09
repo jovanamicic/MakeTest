@@ -17,12 +17,11 @@ public class AnswerServiceImplementation implements AnswerService {
 
     @Override
     public Answer findOne(int id) {
-        Answer answer = answerRepository.findOne(id);
-        Answer retVal = null;
-        if (answer!= null)
-            retVal = answer;
-        else
-            throw new IllegalArgumentException("There is no data with id: " + id);
-        return  retVal;
+        return answerRepository.findOne(id);
+    }
+
+    @Override
+    public Answer save(Answer a) {
+        return answerRepository.save(a);
     }
 }

@@ -25,6 +25,7 @@ public class TestController {
     @Autowired
     UserService userService;
 
+    /* Creating new test. */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<TestDTO> addNewTest(@RequestBody TestDTO t, @RequestHeader("mtt") String token){
         User user = userService.getUserProfile(token);
@@ -33,8 +34,38 @@ public class TestController {
         test.setDescription(t.getDescription());
         test.setCategory(t.getCategory());
         test.setUserTests(user);
-        test.setCreatingDate(new Date());
+        test.setCreatingDate(new Date());  //TODO dodati cuvanje pitanja
         test = testService.save(test);
         return new ResponseEntity<>(new TestDTO(test), HttpStatus.OK);
     }
+
+    /* Updating test info.*/
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<TestDTO> updateTest(@RequestBody TestDTO t, @RequestHeader("mtt") String token){
+        Test test = testService.findOne(t.getId());
+        if(test == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        test.setTestName(t.getTestName());
+        test.setDescription(t.getDescription());
+        test.setCategory(t.getCategory());  //TODO dodati cuvanje pitanja
+        testService.save(test);
+        return new ResponseEntity<>(new TestDTO(test), HttpStatus.OK);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

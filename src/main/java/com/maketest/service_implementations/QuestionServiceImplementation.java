@@ -18,13 +18,11 @@ public class QuestionServiceImplementation implements QuestionService {
 
     @Override
     public Question findOne(int id) {
-        Question question = questionRepository.findOne(id);
-        Question retVal = null;
+        return questionRepository.findOne(id);
+    }
 
-        if(question!=null)
-            retVal = question;
-        else
-            throw new IllegalArgumentException("There is no data with id: " + id);
-        return retVal;
+    @Override
+    public Question save(Question q) {
+        return questionRepository.save(q);
     }
 }

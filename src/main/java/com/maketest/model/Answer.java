@@ -27,6 +27,8 @@ public class Answer {
     @OneToMany(cascade = {CascadeType.ALL},fetch = FetchType.LAZY, mappedBy = "userAnswer")
     private Set<UserAnswer> userAnswers = new HashSet<UserAnswer>();
 
+    public Answer(){};
+
     public Integer getId() {
         return id;
     }

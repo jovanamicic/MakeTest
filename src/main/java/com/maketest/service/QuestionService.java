@@ -8,4 +8,5 @@ import com.maketest.model.Question;
 public interface QuestionService {
 
     Question findOne(int id);
+    Question save(Question q);
 }

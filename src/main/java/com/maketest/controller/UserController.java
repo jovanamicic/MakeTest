@@ -75,7 +75,7 @@ public class UserController {
         return new ResponseEntity<String>(headers, HttpStatus.SEE_OTHER);
     }
 
-    /* Creating new session for logged user.*/
+    /* Login and creating new session for logged user.*/
     @RequestMapping(value = "/sessions", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody UserDTO userToLogin, UriComponentsBuilder uriBuilder) {
         User retVal = userService.login(userToLogin);

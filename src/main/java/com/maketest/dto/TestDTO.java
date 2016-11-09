@@ -15,6 +15,8 @@ public class TestDTO {
         this(t.getId(),t.getTestName(), t.getDescription(), t.getCategory());
     }
 
+    public TestDTO(){}
+
     public TestDTO(int id, String testName, String description, String category) {
         this.id = id;
         this.testName = testName;

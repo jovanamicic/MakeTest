@@ -26,8 +26,10 @@ public class Question {
     private Set<Answer> answers = new HashSet<Answer>();
 
     @ManyToOne
-    @JoinColumn(name="test_questions", referencedColumnName = "test_id", nullable = false)
+    @JoinColumn(name="test_questions", referencedColumnName = "test_id", nullable = true)
     private Test testQuestions;
+
+    public Question(){}
 
     public Integer getId() {
         return id;
