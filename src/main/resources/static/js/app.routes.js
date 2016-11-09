@@ -18,6 +18,10 @@ makeTest.config(['$routeProvider',function ($routeProvider) {
             controller : "TestController",
             controllerAs : "test"
         })
+        .when('/register',{
+            templateUrl : "../js/components/register/register.html"
+            // controller : "components/register/register/controller",
+        })
         .when('/login',{
             templateUrl : "login.html"
         })
@@ -25,4 +29,4 @@ makeTest.config(['$routeProvider',function ($routeProvider) {
            redirectTo : '/'
         });
 }]);
-     }) ()
+     }) ();

@@ -23,6 +23,11 @@ public class IndexPageController {
         return "registration";
     }
 
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String index(){
+        return "index";
+    }
+
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String homePage(@RequestParam String mtt)
     {
