@@ -19,7 +19,7 @@ import java.util.Set;
  * Created by Jovana Micic on 09-Nov-16.
  */
 @RestController
-@RequestMapping(value = "api/questions")
+@RequestMapping(value = "/api/questions")
 public class QuestionController {
 
     @Autowired

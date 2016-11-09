@@ -3,6 +3,7 @@ package com.maketest.service_implementations;
 import com.maketest.converter.UserConverter;
 import com.maketest.dto.UserDTO;
 import com.maketest.dto.UserProfileDTO;
+import com.maketest.email.EmailSender;
 import com.maketest.exceptions.UserTokenNotFoundException;
 import com.maketest.model.Session;
 import com.maketest.model.User;
@@ -13,6 +14,7 @@ import com.maketest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,7 +37,7 @@ public class UserServiceImplementation implements UserService {
     SessionRepository sessionRepository;
 
     @Autowired
-    EmailServiceImplementation emailSender;
+    EmailSender emailSender;
 
     @Override
     public User findOne(String email) {
@@ -66,7 +68,11 @@ public class UserServiceImplementation implements UserService {
         String text = "To activate your account click here: http://localhost:8080" + confirmationUrl
                 + "\n Link for activation will expire in 24 hours.\n Make Test website.";
 
-        emailSender.send(user.getEmail(), subject, text);
+        try {
+            emailSender.sendEmail(user.getEmail(), subject, text);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
         return user;
     }
 
