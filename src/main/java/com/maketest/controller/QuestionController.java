@@ -1,5 +1,6 @@
 package com.maketest.controller;
 
+import com.maketest.dto.AnswerDTO;
 import com.maketest.dto.QuestionDTO;
 import com.maketest.model.Answer;
 import com.maketest.model.Question;
@@ -39,8 +40,8 @@ public class QuestionController {
         question = questionService.save(question);
         //creating answers
         Set<Answer> savedAnswers = new HashSet<>();
-        Set<Answer> answers = q.getAnswers();
-        for (Answer a : answers) {
+        Set<AnswerDTO> answers = q.getAnswers();
+        for (AnswerDTO a : answers) {
             Answer ans = new Answer();
             ans.setAnswerText(a.getAnswerText());
             ans.setQuestionAnswers(question);

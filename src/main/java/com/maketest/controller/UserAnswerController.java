@@ -1,8 +1,10 @@
 package com.maketest.controller;
 
 import com.maketest.dto.UserAnswerDTO;
+import com.maketest.model.Answer;
 import com.maketest.model.Result;
 import com.maketest.model.UserAnswer;
+import com.maketest.service.AnswerService;
 import com.maketest.service.ResultService;
 import com.maketest.service.UserAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class UserAnswerController {
     @Autowired
     UserAnswerService userAnswerService;
 
+    @Autowired
+    AnswerService answerService;
+
     /* Saving all user answers for one test. */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<List<UserAnswerDTO>> saveUserAnswers(@RequestBody List<UserAnswerDTO> ualist){
@@ -34,7 +39,8 @@ public class UserAnswerController {
 
         for (UserAnswerDTO ua: ualist) {
             UserAnswer useranswer = new UserAnswer();
-            useranswer.setUserAnswer(ua.getUserAnswer());
+            Answer answer = answerService.findOne(ua.getUserAnswer().getId());
+            useranswer.setUserAnswer(answer);
             useranswer = userAnswerService.save(useranswer);
             retVal.add(new UserAnswerDTO(useranswer));
         }

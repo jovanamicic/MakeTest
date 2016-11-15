@@ -8,15 +8,15 @@ import com.maketest.model.UserAnswer;
  */
 public class UserAnswerDTO {
     private int id;
-    private Answer userAnswer;
+    private AnswerDTO userAnswer;
 
     public UserAnswerDTO(){}
 
     public UserAnswerDTO(UserAnswer ua){
-        this(ua.getId(),ua.getUserAnswer());
+        this(ua.getId(),new AnswerDTO(ua.getUserAnswer()));
     }
 
-    public UserAnswerDTO(int id, Answer userAnswer) {
+    public UserAnswerDTO(int id, AnswerDTO userAnswer) {
         this.id = id;
         this.userAnswer = userAnswer;
     }
@@ -29,11 +29,11 @@ public class UserAnswerDTO {
         this.id = id;
     }
 
-    public Answer getUserAnswer() {
+    public AnswerDTO getUserAnswer() {
         return userAnswer;
     }
 
-    public void setUserAnswer(Answer userAnswer) {
+    public void setUserAnswer(AnswerDTO userAnswer) {
         this.userAnswer = userAnswer;
     }
 }

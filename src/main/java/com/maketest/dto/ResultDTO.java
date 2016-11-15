@@ -4,6 +4,7 @@ import com.maketest.model.Result;
 import com.maketest.model.Test;
 import com.maketest.model.UserAnswer;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -12,16 +13,24 @@ import java.util.Set;
 public class ResultDTO {
     private int id;
     private int percentage;
-    private Set<UserAnswer> userAnswerResult;
-    private Test test;
+    private Set<UserAnswerDTO> userAnswerResult;
+    private TestDTO test;
 
     public ResultDTO(){}
 
     public ResultDTO(Result r){
-        this(r.getId(),r.getPercentage(),r.getUserAnswerResult(),r.getTestResult());
+        this.id = r.getId();
+        this.percentage = r.getPercentage();
+        this.test = new TestDTO(r.getTestResult());
+        Set<UserAnswerDTO> answers = new HashSet<>();
+        for (UserAnswer answer: r.getUserAnswerResult()) {
+            answers.add(new UserAnswerDTO(answer));
+        }
+
+        this.userAnswerResult = answers;
     }
 
-    public ResultDTO(int id, int percentage, Set<UserAnswer> userAnswerResult, Test test) {
+    public ResultDTO(int id, int percentage, Set<UserAnswerDTO> userAnswerResult, TestDTO test) {
         this.id = id;
         this.percentage = percentage;
         this.userAnswerResult = userAnswerResult;
@@ -44,19 +53,19 @@ public class ResultDTO {
         this.percentage = percentage;
     }
 
-    public Set<UserAnswer> getUserAnswerResult() {
+    public Set<UserAnswerDTO> getUserAnswerResult() {
         return userAnswerResult;
     }
 
-    public void setUserAnswerResult(Set<UserAnswer> userAnswerResult) {
+    public void setUserAnswerResult(Set<UserAnswerDTO> userAnswerResult) {
         this.userAnswerResult = userAnswerResult;
     }
 
-    public Test getTest() {
+    public TestDTO getTest() {
         return test;
     }
 
-    public void setTest(Test test) {
+    public void setTest(TestDTO test) {
         this.test = test;
     }
 }

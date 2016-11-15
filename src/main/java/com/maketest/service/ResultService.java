@@ -1,5 +1,6 @@
 package com.maketest.service;
 
+import com.maketest.dto.UserAnswerDTO;
 import com.maketest.model.Result;
 import com.maketest.model.UserAnswer;
 
@@ -12,5 +13,5 @@ public interface ResultService {
 
     Result findOne(int id);
     Result save(Result result);
-    int calculate(Set<UserAnswer> userAnswers);
+    int calculate(Set<UserAnswerDTO> userAnswers);
 }
