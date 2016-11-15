@@ -17,14 +17,11 @@ public class UserAnswerServiceImplementation implements UserAnswerService {
 
     @Override
     public UserAnswer findOne(int id) {
-        UserAnswer userAnswer = userAnswerRepository.findOne(id);
-        UserAnswer retVal = null;
+        return userAnswerRepository.findOne(id);
+    }
 
-        if (userAnswer!=null){
-            retVal = userAnswer;
-        }
-        else
-            throw new IllegalArgumentException("There is no data with id: " + id);
-        return retVal;
+    @Override
+    public UserAnswer save(UserAnswer userAnswer) {
+        return userAnswerRepository.save(userAnswer);
     }
 }

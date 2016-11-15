@@ -16,7 +16,7 @@ public class UserAnswer {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name="user_answer_result", referencedColumnName = "result_id", nullable = false)
+    @JoinColumn(name="user_answer_result", referencedColumnName = "result_id", nullable = true)
     private Result userAnswerResult;
 
     @ManyToOne

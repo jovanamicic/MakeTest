@@ -3,6 +3,8 @@ package com.maketest.dto;
 import com.maketest.model.Answer;
 import com.maketest.model.Question;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,15 +15,22 @@ public class QuestionDTO {
     private Integer id;
     private String questionText;
     private String correctAnswer;
-    private Set<Answer> answers;
+    private Set<AnswerDTO> answers;
 
     public QuestionDTO(Question q){
-        this(q.getId(), q.getQuestionText(), q.getCorrectAnswer(), q.getAnswers());
+        Set<AnswerDTO> qanswers = new HashSet<>();
+        for (Answer a : q.getAnswers()) {
+            qanswers.add(new AnswerDTO(a));
+        }
+        this.id = q.getId();
+        this.questionText = q.getQuestionText();
+        this.correctAnswer = q.getCorrectAnswer();
+        this.answers = qanswers;
     }
 
     public QuestionDTO(){}
 
-    public QuestionDTO(Integer id, String questionText, String correctAnswer, Set<Answer> answers) {
+    public QuestionDTO(Integer id, String questionText, String correctAnswer, Set<AnswerDTO> answers) {
         this.id = id;
         this.questionText = questionText;
         this.correctAnswer = correctAnswer;
@@ -56,11 +65,11 @@ public class QuestionDTO {
         this.id = id;
     }
 
-    public Set<Answer> getAnswers() {
+    public Set<AnswerDTO> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(Set<Answer> answers) {
+    public void setAnswers(Set<AnswerDTO> answers) {
         this.answers = answers;
     }
 }

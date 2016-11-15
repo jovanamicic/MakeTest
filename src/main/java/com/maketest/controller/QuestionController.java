@@ -1,5 +1,6 @@
 package com.maketest.controller;
 
+import com.maketest.dto.AnswerDTO;
 import com.maketest.dto.QuestionDTO;
 import com.maketest.model.Answer;
 import com.maketest.model.Question;
@@ -12,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,8 +40,8 @@ public class QuestionController {
         question = questionService.save(question);
         //creating answers
         Set<Answer> savedAnswers = new HashSet<>();
-        Set<Answer> answers = q.getAnswers();
-        for (Answer a : answers) {
+        Set<AnswerDTO> answers = q.getAnswers();
+        for (AnswerDTO a : answers) {
             Answer ans = new Answer();
             ans.setAnswerText(a.getAnswerText());
             ans.setQuestionAnswers(question);
@@ -64,7 +67,16 @@ public class QuestionController {
         return new ResponseEntity<>(new QuestionDTO(question), HttpStatus.OK);
     }
 
-
+    /* Function returns all questions of given test id.*/
+    @RequestMapping(value = "/all/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<QuestionDTO>> getTestQuestions(@PathVariable int id){
+        List<QuestionDTO> retVal = new ArrayList<>();
+        List<Question> questions = questionService.findByTest(id);
+        for (Question q: questions) {
+            retVal.add(new QuestionDTO(q));
+        }
+        return new ResponseEntity<>(retVal, HttpStatus.OK);
+    }
 
 
 

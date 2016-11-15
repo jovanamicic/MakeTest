@@ -79,9 +79,16 @@ public class UserController {
     @RequestMapping(value = "/sessions", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody UserDTO userToLogin, UriComponentsBuilder uriBuilder) {
         User retVal = userService.login(userToLogin);
-        String sessionToken = retVal.getUserSession().getSessionToken();
-        URI location = uriBuilder.path("api/users/sessions/{token}").buildAndExpand(sessionToken).toUri();
-        return ResponseEntity.created(location).build(); //creates resurs
+        if (retVal != null){
+            String sessionToken = retVal.getUserSession().getSessionToken();
+            URI location = uriBuilder.path("api/users/sessions/{token}").buildAndExpand(sessionToken).toUri();
+            return ResponseEntity.created(location).build(); //creates resurs
+        }
+        else {
+            String msg = "Error";
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @RequestMapping(value = "/sessions/{token}", method = RequestMethod.GET)
