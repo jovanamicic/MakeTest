@@ -2,7 +2,9 @@ angular.module('makeTest.services').factory('userService',function($http,$cookie
     var service = {
         logout : logout,
         showUser : showUser,
-        update : update
+        update : update,
+
+
     }
     return service;
 

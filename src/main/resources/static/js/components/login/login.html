@@ -1,18 +1,36 @@
-
+-<html>
+-<head>
+    -    <title>Make your test</title>
+    -    <meta charset="utf-8"/><meta charset="utf-8"/>
+    -    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    -
+    -    <link rel="stylesheet" href="css/indexStyle.css"/>
+    -    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    -    <link rel="stylesheet" href="css/toastr.css"/>
+    -
+    -    <script src="js/vendor/jquery-3.1.1.js"></script>
+    -    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    -    <script src="js/vendor/toastr.js"></script>
+    -    <script src="js/login.js"></script>
+    -</head>
+-<body background="img/background.jpg">
+-<div id="transparentBox">
+    -</div>
 -<div id="formBox" ng-app="app.loginform" ng-controller="login.controller">
-    -    <form>
+    -    <form novalidate name="loginForm" class="form" >
     -        <div class="form-group col-xs-12">
     -            <img src="img/logo.gif"/>
     -        </div>
     -        <div class="form-group col-xs-12">
-    -            <input type="text" class="form-control" placeholder="E-mail address" id="email" name="username" ng-model="username"/>
+    -            <input type="email" name="email"  placeholder="Email" ng-model="user.email" required>
+                    <p class="error" ng-show="loginForm.email.$invalid && loginForm.psw.$touched"> Please, enter a valid email</p>
     -        </div>
     -        <div class="form-group col-xs-12" >
-    -            <input type="password" class="form-control" placeholder="Password" id="pwd" name="password" ng-model="password"/>
-    -            <h5>You forgot your password? <a href="#" id="forgotPasswordLink">Click here</a></h5>
+    -            <input type="password" name="psw" placeholder="Password" ng-model="user.password" required>
+                    <p class="error" ng-show="loginForm.psw.$invalid && loginForm.psw.$touched"> Please, enter  password</p>
     -        </div>
     -        <div class="form-group col-xs-12">
-    -            <button type="button" class="btn btn-info form-control" id="loginBtn" ng-click="submit()">Log in</button>
+    -            <button type="button" class="btn btn-info form-control" id="loginBtn" ng-click="login()">Log in</button>
     -        </div>
     -        <div class="form-group col-xs-12">
     -            <button type="button" class="btn btn-primary form-control" id="loginBtnFb">Log in using Facebook</button>
@@ -23,3 +41,5 @@
     -
     -    </form>
     -</div>
+-</body>
+-</html>
