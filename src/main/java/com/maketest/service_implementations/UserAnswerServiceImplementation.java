@@ -27,4 +27,9 @@ public class UserAnswerServiceImplementation implements UserAnswerService {
             throw new IllegalArgumentException("There is no data with id: " + id);
         return retVal;
     }
+
+    @Override
+    public UserAnswer save(UserAnswer userAnswer) {
+        return userAnswerRepository.save(userAnswer);
+    }
 }

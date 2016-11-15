@@ -8,4 +8,5 @@ import com.maketest.model.UserAnswer;
 public interface UserAnswerService {
 
     UserAnswer findOne(int id);
+    UserAnswer save(UserAnswer userAnswer);
 }

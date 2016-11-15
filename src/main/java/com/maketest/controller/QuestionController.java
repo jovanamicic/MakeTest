@@ -12,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -64,7 +66,16 @@ public class QuestionController {
         return new ResponseEntity<>(new QuestionDTO(question), HttpStatus.OK);
     }
 
-
+    /* Function returns all questions of given test id.*/
+    @RequestMapping(value = "/all/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<QuestionDTO>> getTestQuestions(@PathVariable int id){
+        List<QuestionDTO> retVal = new ArrayList<>();
+        List<Question> questions = questionService.findByTest(id);
+        for (Question q: questions) {
+            retVal.add(new QuestionDTO(q));
+        }
+        return new ResponseEntity<>(retVal, HttpStatus.OK);
+    }
 
 
 

@@ -21,14 +21,14 @@ public class Result {
     @Column (name="result_date", unique = false, nullable = false)
     private Date resultDate;
 
-    @Column (name = "percentage", unique = false, nullable = false)
+    @Column (name = "percentage", unique = false, nullable = true)
     private Integer percentage;
 
     @OneToMany(cascade = {CascadeType.ALL},fetch = FetchType.LAZY, mappedBy = "userAnswerResult")
     private Set<UserAnswer> userAnswerResult = new HashSet<UserAnswer>();
 
     @ManyToOne
-    @JoinColumn(name="test_result", referencedColumnName = "test_id", nullable = false)
+    @JoinColumn(name="test_result", referencedColumnName = "test_id", nullable = true)
     private Test testResult;
 
     public Integer getId() {
@@ -63,6 +63,14 @@ public class Result {
         this.userAnswerResult = userAnswerResult;
     }
 
+    public Test getTestResult() {
+        return testResult;
+    }
+
+    public void setTestResult(Test testResult) {
+        this.testResult = testResult;
+    }
+
     @Override
     public String toString() {
         return "Result{" +
@@ -70,6 +78,7 @@ public class Result {
                 ", resultDate=" + resultDate +
                 ", percentage=" + percentage +
                 ", userAnswerResult=" + userAnswerResult +
+                ", testResult=" + testResult +
                 '}';
     }
 }
