@@ -1,12 +1,9 @@
 /**
  * Created by Jovana Micic on 02-Nov-16.
  */
-angular.module('makeTest.controllers').controller('UserController', UserController);
+angular.module('makeTest.controllers').controller('UserController', ['$scope', '$cookies', '$location', 'userService', UserController]);
 
-UserController.$inject = ['userService','$routeParams', '$cookies', '$location', '$scope'];
-
-//$location, $routeParams
-function UserController(userService,$routeParams, $cookies, $location, $scope) {
+function UserController($scope, $cookies, $location, userService) {
     var vm = this;
     vm.user = {};
 

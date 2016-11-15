@@ -19,11 +19,13 @@ makeTest.config(['$routeProvider',function ($routeProvider) {
             controllerAs : "test"
         })
         .when('/register',{
-            templateUrl : "../js/components/register/register.html"
-            // controller : "components/register/register/controller",
+            templateUrl : "../js/components/register/register.html",
+            controller : "components/register/register/controller",
         })
         .when('/login',{
-            templateUrl : "login.html"
+            templateUrl : "../js/components/login/login.html",
+            controller : "login.controller",
+
         })
         .otherwise({
            redirectTo : '/'

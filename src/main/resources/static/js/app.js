@@ -4,7 +4,8 @@ var app = angular.module('makeTest',
     'makeTest.services',
     'makeTest.routes',
     'makeTest.directives',
-    'ngCookies'
+    'ngCookies',
+    'app.loginform'
 ]);
 
 var apiRoot = 'http://localhost:8080/api/';
