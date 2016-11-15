@@ -1,11 +1,12 @@
 package com.maketest.service_implementations;
 
-import com.maketest.dto.TestDTO;
 import com.maketest.model.Test;
 import com.maketest.repository.TestRepository;
 import com.maketest.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by Jovana Micic on 25-Oct-16.
@@ -19,6 +20,12 @@ public class TestServiceImplementation implements TestService {
     @Override
     public Test findOne(int id) {
         return testRepository.findOne(id);
+    }
+
+    @Override
+    public List<Test> findAll() {
+        List<Test> retVal = testRepository.findAll();
+        return retVal;
     }
 
     @Override

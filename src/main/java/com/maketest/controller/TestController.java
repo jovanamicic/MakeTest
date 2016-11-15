@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Jovana Micic on 08-Nov-16.
@@ -53,19 +55,27 @@ public class TestController {
         return new ResponseEntity<>(new TestDTO(test), HttpStatus.OK);
     }
 
+    /* Getting all tests.*/
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public ResponseEntity<List<TestDTO>> getAllTests(){
+        List<Test> tests = testService.findAll();
+        List<TestDTO> testsDTO = new ArrayList<>();
+        for (Test t : tests) {
+            testsDTO.add(new TestDTO(t));
+        }
+        return new ResponseEntity<>(testsDTO, HttpStatus.OK);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /*
+     * Getting test by id.
+     */
+    @RequestMapping(value="/{id}", method=RequestMethod.GET)
+    public ResponseEntity<TestDTO> getTest(@PathVariable int id) {
+        Test test = testService.findOne(id);
+        if (test == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(new TestDTO(test), HttpStatus.OK);
+    }
 
 }
