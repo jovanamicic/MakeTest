@@ -85,7 +85,7 @@ public class UserController {
             return ResponseEntity.created(location).build(); //creates resurs
         }
         else {
-            String msg = "Error";
+            String msg = "{Error}";
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         }
 
