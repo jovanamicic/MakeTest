@@ -37,20 +37,20 @@ public class ResultServiceImplementation implements ResultService {
 
     @Override
     public int calculate(Set<UserAnswerDTO> userAnswers) {
-        int percentage = 0;
-        int correctAnswers = 0;
-        int totalQuestions = userAnswers.size();
+        double percentage = 0;
+        double correctAnswers = 0;
+        double totalQuestions = userAnswers.size();
 
         for (UserAnswerDTO ua : userAnswers) {
-            Answer ans = answerRepository.findOne(ua.getId());
+            Answer ans = answerRepository.findOne(ua.getUserAnswer().getId());
             Question q = ans.getQuestionAnswers();
             if (ans.getAnswerText().equalsIgnoreCase(q.getCorrectAnswer())){
                 correctAnswers++;
             }
         }
         if (correctAnswers > 0){
-            percentage = (correctAnswers/totalQuestions) * 10;
+            percentage = (correctAnswers/totalQuestions) * 100;
         }
-        return percentage;
+        return (int) percentage;
     }
 }

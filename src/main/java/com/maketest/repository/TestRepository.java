@@ -15,4 +15,5 @@ import java.util.List;
 public interface TestRepository extends PagingAndSortingRepository<Test, Integer> {
     Page<Test> findAll (Pageable pegeable);
     List<Test> findAll();
+    List<Test> findByCategory(String category);
 }

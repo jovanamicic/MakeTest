@@ -5,6 +5,7 @@ import com.maketest.model.Test;
 import com.maketest.model.User;
 import com.maketest.service.TestService;
 import com.maketest.service.UserService;
+import com.sun.mail.iap.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,4 +79,21 @@ public class TestController {
         return new ResponseEntity<>(new TestDTO(test), HttpStatus.OK);
     }
 
+    /* Getting all categories*/
+    @RequestMapping(value = "/categories", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getCategories(){
+        List<String> categories = testService.findAllByCategory();
+        return new ResponseEntity<>(categories,( HttpStatus.OK));
+    }
+
+    /*Getting test by category */
+    @RequestMapping(value = "/categories/{categoryName}", method = RequestMethod.GET)
+    public ResponseEntity<List<TestDTO>> getTestByCategory(@PathVariable String categoryName){
+        List<Test> tests = testService.findByCategory(categoryName);
+        List<TestDTO> retVal = new ArrayList<>();
+        for (Test t: tests){
+            retVal.add(new TestDTO(t));
+        }
+        return new ResponseEntity<>(retVal,( HttpStatus.OK));
+    }
 }

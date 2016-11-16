@@ -65,9 +65,6 @@ public class Answer {
     public String toString() {
         return "Answer{" +
                 "id=" + id +
-                ", answerText='" + answerText + '\'' +
-                ", questionAnswers=" + questionAnswers +
-                ", userAnswers=" + userAnswers +
-                '}';
+                ", answerText='" + answerText;
     }
 }

@@ -11,4 +11,6 @@ public interface TestService {
     Test findOne(int id);
     List<Test> findAll();
     Test save(Test test);
+    List<String> findAllByCategory();
+    List<Test> findByCategory(String category);
 }

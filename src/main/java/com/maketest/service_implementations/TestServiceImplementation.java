@@ -6,6 +6,7 @@ import com.maketest.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +32,21 @@ public class TestServiceImplementation implements TestService {
     @Override
     public Test save(Test test) {
         return testRepository.save(test);
+    }
+
+    @Override
+    public List<Test> findByCategory(String category) {
+        return testRepository.findByCategory(category);
+    }
+
+    @Override
+    public List<String> findAllByCategory() {
+        List<Test> tests = testRepository.findAll();
+        List<String> categories = new ArrayList<>();
+        for (Test t: tests) {
+            categories.add(t.getCategory());
+        }
+        return categories;
     }
 
 
