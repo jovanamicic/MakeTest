@@ -3,11 +3,22 @@ angular.module('makeTest.services').factory('userService',function($http,$cookie
         logout : logout,
         showUser : showUser,
         update : update,
-
-
-    }
+        login : login
+    };
     return service;
 
+    function login(data) {
+        return $http({
+            method: 'POST',
+            url: "/api/users/sessions",
+            data: data,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+
+    };
     function logout() {
         return $http.delete(apiRoot+'users/sessions/'+ $cookieStore.get('mtt'));
     };
