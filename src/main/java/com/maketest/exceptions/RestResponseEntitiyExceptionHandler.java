@@ -18,8 +18,8 @@ public class RestResponseEntitiyExceptionHandler extends ResponseEntityException
     public ResponseEntity<Error> userNotFound (UserNotFoundException e){
         String email = e.getEmail();
         long timestamp = System.currentTimeMillis();
-        Error error = new Error(1,"User not found","User with email: "+email+" and password not found.", timestamp);
-        return new ResponseEntity<Error>(error, HttpStatus.NOT_FOUND);
+        Error error = new Error(1,"User not found","Wrong email ["+email+"] or password. ", timestamp);
+        return new ResponseEntity<Error>(error, HttpStatus.BAD_REQUEST);
     }
 
 

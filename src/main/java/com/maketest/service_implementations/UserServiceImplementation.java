@@ -1,5 +1,6 @@
 package com.maketest.service_implementations;
 
+import com.google.common.base.Preconditions;
 import com.maketest.converter.UserConverter;
 import com.maketest.dto.UserDTO;
 import com.maketest.dto.UserProfileDTO;
@@ -78,6 +79,8 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User login(UserDTO userToRegister) {
+        Preconditions.checkNotNull(userToRegister.getEmail());
+        Preconditions.checkNotNull(userToRegister.getPassword());
         String hashedPassword = MD5Hash.getMD5(userToRegister.getPassword());
         User user = userRepository.findByEmailAndPassword(userToRegister.getEmail(),hashedPassword);
         if (user != null){

@@ -85,24 +85,10 @@ public class UserController {
             return ResponseEntity.created(location).build(); //creates resurs
         }
         else {
-            String msg = "{\"message\":\"Error\"}";
-            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+            //exception when email and password are not matching
+            throw new UserNotFoundException(userToLogin.getEmail());
         }
-
     }
-
- /*   @RequestMapping(value = "/sessions/{token}", method = RequestMethod.GET)
-    public ResponseEntity<?> getToken(@PathVariable String token) {
-        Session validToken = sessionService.getToken(token);
-        if (validToken != null){
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add("Location", "http://localhost:8080/home?mtt="+token);
-            return new ResponseEntity<Session>(validToken, httpHeaders, HttpStatus.SEE_OTHER);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    } */
 
     @RequestMapping(value = "/sessions/{token}", method = RequestMethod.GET)
     public ResponseEntity<UserProfileDTO> getToken(@PathVariable String token) {
