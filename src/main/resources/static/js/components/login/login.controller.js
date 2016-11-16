@@ -1,41 +1,20 @@
-var app = angular.module('app.loginform', []);
+var app = angular.module('app.loginform', ['ngCookies']);
 
-app.controller('login.controller', ['$scope', '$http', function ($scope, $http) {
+app.controller('login.controller', ['$scope', '$http', '$cookies', 'userService', function ($scope, $http, $cookies, userService) {
+
     $scope.login = function () {
         if ($scope.loginForm.$valid) {
-            $http({
-                method: 'POST',
-                url: "/api/users/sessions",
-                data: {
-                    email: $scope.user.email,
-                    password: $scope.user.password
-                },
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(function (response) {
-                console.log(response.data);
+            var data = {
+                "email" : $scope.user.email,
+                "password" : $scope.user.password
+            };
+            userService.login(data).then(function (response) {
+                var token = response.headers().location.split("/")[6];
+                $cookies.put('make-test-token', token);
             }, function (response) {
-                console.log(response.data);
+                // TODO: show failure message
             });
         }
     };
 
-
-    // $.ajax({
-    //     method: "POST",
-    //     data: loginJSON(email, psw),
-    //     contentType: "application/json",
-    //     url: "/api/users/sessions",
-    // }).then(function successCallback(res, status, xhr) {
-    //     var url = xhr.getResponseHeader("Location");
-    //     var token = url.split('/').pop();
-    //     setTimeout(function () {
-    //         window.location.href = "api/users/sessions/"+token;
-    //     }, 2000);
-    // }, function errorCallback(xhr, e) {
-    //     console.log(xhr.responseText);
-    //     toastr.error("Wrong email or password. Please try again.");
-    //     $("#pwd").val("");
-    // });
 }]);
