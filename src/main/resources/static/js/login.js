@@ -4,7 +4,7 @@ function loginJSON(email,password) {
         "password" : password
     });
 }
-
+/*
 $(document).on('click','#loginBtn', function () {
     var email = $("#email").val();
     var psw = $("#pwd").val();
@@ -42,7 +42,7 @@ $(document).on('click','#loginBtn', function () {
     }
 
 })
-
+*/
 $(document).on('click','#registerLink',function () {
     setTimeout(function () {
         window.location.href = "registration.html";
