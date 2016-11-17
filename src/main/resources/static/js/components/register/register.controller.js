@@ -1,28 +1,23 @@
-// /**
-//  * Created by Milan on 16/11/2016.
-//  */
-// var app = angular.module('app.registerform', []);
-//
-// app.controller('register.controller', ['$scope', '$http', function ($scope, $http) {
-//     $scope.login = function () {
-//         if ($scope.registerForm.$valid) {
-//             $http({
-//                 method: 'POST',
-//                 url: "/api/users/sessions",
-//                 data: {
-//                     email: $scope.user.email,
-//                     password: $scope.user.password
-//                 },
-//                 headers: {
-//                     'Content-Type': 'application/json'
-//                 }
-//             }).then(function (response) {
-//                 console.log(response.data);
-//             }, function (response) {
-//                 console.log(response.data);
-//             });
-//         }
-//     };
-//
-//
-// }]);
+/**
+ * Created by Milan on 16/11/2016.
+ */
+var app = angular.module('app.registerform', ['ngCookies']);
+
+app.controller('register.controller', ['$scope', '$http', '$cookies', 'userService', function ($scope, $http, $cookies, userService) {
+
+    $scope.register = function () {
+        if ($scope.loginForm.$valid) {
+            var data = {
+                "email" : $scope.user.email,
+                "password" : $scope.user.password
+            };
+            userService.login(data).then(function (response) {
+                var token = response.headers().location.split("/")[6];
+                $cookies.put('make-test-token', token);
+            }, function (response) {
+                // TODO: show failure message
+            });
+        }
+    };
+
+}]);
