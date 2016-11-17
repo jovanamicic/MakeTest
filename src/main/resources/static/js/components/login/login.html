@@ -21,6 +21,12 @@
     -        <div class="form-group col-xs-12">
     -            <img src="img/logo.gif"/>
     -        </div>
+                <div class="form-group col-xs-12" ng-if="showLoginAlert">
+                    <div class="alert alert-danger">
+                      <p>Wrong email or password</p>.
+                   </div>
+                </div>
+
     -        <div class="form-group col-xs-12">
     -            <input type="email" name="email"  placeholder="Email" ng-model="user.email" required>
                     <p class="error" ng-show="loginForm.email.$invalid && loginForm.psw.$touched"> Please, enter a valid email</p>
