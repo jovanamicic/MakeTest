@@ -40,35 +40,4 @@ public class UserServiceImplementationTest {
         assertThat(dbUser.getToken()).isEqualTo(UserConstants.DB_TOKEN);
         assertThat(dbUser.getTokenExpireDate()).isEqualTo(UserConstants.DB_TOKEN_EXPIRE_DATE);
     }
-
-    @org.junit.Test
-    public void update() throws Exception {
-
-    }
-
-    @org.junit.Test
-    public void save() throws Exception {
-
-    }
-
-    @org.junit.Test
-    public void login() throws Exception {
-
-    }
-
-    @org.junit.Test
-    public void checkIfEmailExists() throws Exception {
-
-    }
-
-    @org.junit.Test
-    public void activateUser() throws Exception {
-
-    }
-
-    @org.junit.Test
-    public void getUserProfile() throws Exception {
-
-    }
-
 }
