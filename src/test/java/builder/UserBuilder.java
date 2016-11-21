@@ -4,6 +4,8 @@ import com.github.mirreck.FakeFactory;
 import com.maketest.dto.UserDTO;
 import com.maketest.model.User;
 
+import java.util.Random;
+
 /**
  * Created by Jovana Micic on 18-Nov-16.
  */
@@ -17,6 +19,7 @@ public class UserBuilder {
 
     public static UserBuilder random(){
         UserDTO user = new UserDTO();
+        user.setId(Integer.parseInt(fakeFactory.digits(3)));
         user.setEmail(fakeFactory.email());
         user.setPassword(fakeFactory.letters(20));
         user.setFirstName(fakeFactory.firstName());

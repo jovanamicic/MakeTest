@@ -14,7 +14,7 @@ public interface UserService {
     User save(User user);
     User update(User user);
     User login (UserDTO userToRegister);
-    String checkIfEmailExists(String email);
+    boolean emailExists(String email);
     boolean activateUser(String token);
     User getUserProfile(String token);
 }

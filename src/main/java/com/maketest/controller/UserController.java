@@ -42,25 +42,25 @@ public class UserController {
     /* Creating new user*/
     @RequestMapping( method = RequestMethod.POST)
     public ResponseEntity<UserDTO> registerNewUser(@RequestBody UserDTO u) {
+        if (userService.emailExists(u.getEmail())){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         User user = new User();
         user.setEmail(u.getEmail());
         user.setFirstName(u.getFirstName());
         user.setLastName(u.getLastName());
-        String hashedPassword = MD5Hash.getMD5(u.getPassword());
+        String hashedPassword = "";
+        if(u.getPassword() != null) {
+            hashedPassword = MD5Hash.getMD5(u.getPassword());
+        }
         user.setPassword(hashedPassword);
         user = userService.save(user);
-        return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);
-    }
-
-
-    @RequestMapping(value = "/user-email", method = RequestMethod.POST)
-    public String checkIfEmailExists(@RequestBody String email) {
-        email = email.replace("\"", "");
-        String retVal = userService.checkIfEmailExists(email);
-        if (retVal == null) {
-            throw new UserEmailNotFoundException(email);
+        if(user != null) {
+            return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);
         }
-        return retVal;
+        else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     /*
@@ -90,7 +90,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/sessions/{token}", method = RequestMethod.GET)
+    @RequestMapping(value = "/sessions/{token}", method = RequestMethod.GET) //***testirati
     public ResponseEntity<UserProfileDTO> getToken(@PathVariable String token) {
         Session validToken = sessionService.getToken(token);
         if (validToken != null){
@@ -103,7 +103,7 @@ public class UserController {
     }
 
     /*  Deleting session token after logging out.*/
-    @RequestMapping(value = "/sessions/{token}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/sessions/{token}", method = RequestMethod.DELETE) //***testirati
     public ResponseEntity<Void> logout(@PathVariable String token)
     {
         Session session = sessionService.findBySessionToken(token);
@@ -117,7 +117,7 @@ public class UserController {
     }
 
     /* Getting user profile. */
-    @RequestMapping(value = "/userProfile", method = RequestMethod.GET)
+    @RequestMapping(value = "/userProfile", method = RequestMethod.GET) //***testirati
     public ResponseEntity<UserProfileDTO> userProfile(@RequestHeader("mtt") String sessionToken) {
             User user = userService.getUserProfile(sessionToken);
             if (user == null){
@@ -128,8 +128,8 @@ public class UserController {
 
     /* Method updates user data.*/
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO u, @RequestHeader("mtt") String sessionToken){
-        User user = userService.getUserProfile(sessionToken);
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO u){
+        User user = userService.findOne(u.getEmail());
         if (user == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

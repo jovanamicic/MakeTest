@@ -54,28 +54,33 @@ public class UserServiceImplementation implements UserService {
     /* Function saves user info in data base, generate token and send user activation link.*/
     @Override
     public User save(User user) {
-        user.setProfilePhotoRelativePath("img/defaultUserPhoto.png");
+        if(!isNull(user)) {
+            user.setProfilePhotoRelativePath("img/defaultUserPhoto.png");
 
-        //Generating activation token
-        String token = UUID.randomUUID().toString();
-        Date expireDate = calculateExpiryDate(EXPIRATION);
-        user.setToken(token);
-        user.setTokenExpireDate(expireDate);
+            //Generating activation token
+            String token = UUID.randomUUID().toString();
+            Date expireDate = calculateExpiryDate(EXPIRATION);
+            user.setToken(token);
+            user.setTokenExpireDate(expireDate);
 
-        user = userRepository.save(user);
-        /*
-        //Sending email
-        String subject = "Activation link";
-        String confirmationUrl = "/api/users/activation?token=" + token;
-        String text = "To activate your account click here: http://localhost:8080" + confirmationUrl
-                + "\n Link for activation will expire in 24 hours.\n Make Test website.";
+            user = userRepository.save(user);
 
-        try {
-            emailSender.sendEmail(user.getEmail(), subject, text);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } */
-        return user;
+            //Sending email
+      /*      String subject = "Activation link";
+            String confirmationUrl = "/api/users/activation?token=" + token;
+            String text = "To activate your account click here: http://localhost:8080" + confirmationUrl
+                    + "\n Link for activation will expire in 24 hours.\n Make Test website.";
+
+            try {
+                emailSender.sendEmail(user.getEmail(), subject, text);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            } */
+            return user;
+        }
+        else{
+            return null;
+        }
     }
 
     @Override
@@ -115,13 +120,13 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public String checkIfEmailExists(String email) {
+    public boolean emailExists(String email) {
         User user = userRepository.findByEmail(email);
         if (user != null){
-           return  "exists";
+           return  true;
         }
         else{
-            return "not exists";
+            return false;
         }
     }
 
@@ -151,5 +156,17 @@ public class UserServiceImplementation implements UserService {
         return new Date(cal.getTime().getTime());
     }
 
+    private boolean isNull(User user){
+        if (user.getFirstName() == null)
+            return true;
+        else if(user.getLastName() == null)
+            return true;
+        else if(user.getEmail() == null)
+            return true;
+        else if(user.getPassword() == null)
+            return true;
+        else
+            return false;
+    }
 
 }

@@ -8,6 +8,7 @@ import com.maketest.dto.UserDTO;
 import com.maketest.model.Session;
 import com.maketest.model.SessionRequest;
 import com.maketest.model.User;
+import com.maketest.model.UserRequest;
 import com.maketest.repository.UserRepository;
 import com.maketest.service.SessionService;
 import com.maketest.service.UserService;
@@ -37,6 +38,7 @@ import javax.annotation.PostConstruct;
 import java.nio.charset.Charset;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -45,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = MakeTestApplication.class)
 @ActiveProfiles("test")
-public class UserControllerTest{
+public class UserControllerTest {
 
     private MockMvc mockMvc;
 
@@ -70,7 +72,7 @@ public class UserControllerTest{
     //LOGIN TESTS
 
     @Test
-    public void testLoginBadRequest() throws Exception{
+    public void testLoginBadRequest() throws Exception {
         mockMvc.perform(post("/api/users/sessions")
                 .content("{}")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -85,10 +87,10 @@ public class UserControllerTest{
         String content = mapper.writeValueAsString(createLoginRequest);
 
         MvcResult result = mockMvc.perform(post("/api/users/sessions")
-                            .content(content)
-                            .contentType(MediaType.APPLICATION_JSON))
-                            .andExpect(status().isCreated())
-                            .andReturn();
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
 
         assertNotNull(result.getResponse().getHeader("Location"));
         String[] locationSegments = result.getResponse().getHeader("Location").split("/");
@@ -99,13 +101,88 @@ public class UserControllerTest{
         assertEquals(token, session.getSessionToken());
     }
 
+    //REGISTRATION TESTS
+    @Test
+    public void testRegisterNewUserBadRequest() throws Exception {
+        mockMvc.perform(post("/api/users")
+                .content("{}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    public void testRegisterNewUserValid() throws Exception {
+        UserDTO u = UserBuilder.random().build();  //kreira random podatke kao sa forme
+        String content = mapper.writeValueAsString(u);
+
+        MvcResult result = mockMvc.perform(post("/api/users")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        assertNotNull(result);
+
+    }
+
+    @Test
+    public void testRegisterNewUserEmailExists() throws Exception {
+        UserDTO u = UserBuilder.random().build();  //kreira random podatke kao sa forme
+        u.setEmail("test@gmail.com");  //ovo je neki vec uneti mejl
+        String content = mapper.writeValueAsString(u);
+
+        mockMvc.perform(post("/api/users")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    //UPDATE TEST
+    @Test
+    public void testUpdateUserBadRequest() throws Exception {
+        mockMvc.perform(put("/api/users")
+                .content("{}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    public void testUpdateUserValid() throws Exception {
+        UserRequest createUpdateRequest = createUpdateRequest();
+        createUpdateRequest.setLastName("Changed name");
+        String content = mapper.writeValueAsString(createUpdateRequest);
+
+        MvcResult result = mockMvc.perform(put("/api/users")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertNotNull(result);
+
+        String retVal = result.getResponse().getContentAsString();
+        UserRequest userResponse = mapper.readValue(retVal, UserRequest.class);
+        assertEquals(userResponse.getLastName(), "Changed name");
+
+    }
+
     public SessionRequest createAuthenticationRequest() {
         UserDTO u = UserBuilder.random().build();
         saveUser(u);
         return new SessionRequest(u.getEmail(), u.getPassword());
     }
 
-    public void saveUser(UserDTO u){
+    public UserRequest createUpdateRequest() {
+        UserDTO u = UserBuilder.random().build();
+        saveUser(u);
+        return new UserRequest(u.getId(),u.getFirstName(), u.getLastName(), u.getPassword(), u.getEmail());
+    }
+
+    public void saveUser(UserDTO u) {
         User user = new User();
         user.setEmail(u.getEmail());
         user.setFirstName(u.getFirstName());
@@ -115,5 +192,5 @@ public class UserControllerTest{
         userService.save(user);
     }
 
-    //REGISTRATION TESTS
+
 }
