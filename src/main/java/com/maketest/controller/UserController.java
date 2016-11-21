@@ -90,9 +90,9 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/sessions/{token}", method = RequestMethod.GET) //***testirati
+    @RequestMapping(value = "/sessions/{token}", method = RequestMethod.GET)
     public ResponseEntity<UserProfileDTO> getToken(@PathVariable String token) {
-        Session validToken = sessionService.getToken(token);
+        Session validToken = sessionService.getSession(token);
         if (validToken != null){
             User user = userService.getUserProfile(token);
             return new ResponseEntity<>(new UserProfileDTO(user),HttpStatus.OK);
@@ -117,13 +117,22 @@ public class UserController {
     }
 
     /* Getting user profile. */
-    @RequestMapping(value = "/userProfile", method = RequestMethod.GET) //***testirati
-    public ResponseEntity<UserProfileDTO> userProfile(@RequestHeader("mtt") String sessionToken) {
-            User user = userService.getUserProfile(sessionToken);
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<UserProfileDTO> userProfile(@RequestHeader("mtt") String sessionToken, @PathVariable int id) {
+            User user = userService.findOne(id);
             if (user == null){
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);  //ne postoji user sa ovim id-om
             }
-            return new ResponseEntity<>(new UserProfileDTO(user),HttpStatus.OK);
+            else if(user.getUserSession().getSessionToken().equals(sessionToken)) {
+                Session s = sessionService.getSession(sessionToken);
+                if (s == null) {
+                    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); //znaci da sesija nije validna, prosao joj rok
+                }
+                return new ResponseEntity<>(new UserProfileDTO(user), HttpStatus.OK); //sve je ok vracam user-a
+            }
+            else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); //znaci da nije isti token usera i onaj koji je poslat
+            }
     }
 
     /* Method updates user data.*/

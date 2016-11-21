@@ -47,6 +47,11 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
+    public User findOne(int id) {
+        return userRepository.findOne(id);
+    }
+
+    @Override
     public User update(User user){
         return userRepository.save(user);
     }
@@ -144,6 +149,11 @@ public class UserServiceImplementation implements UserService {
     public com.maketest.model.User getUserProfile(String sessionToken) {
         Session s = sessionRepository.findBySessionToken(sessionToken);
         return userRepository.findByUserSession(s);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     /* Calculate expire date of token */

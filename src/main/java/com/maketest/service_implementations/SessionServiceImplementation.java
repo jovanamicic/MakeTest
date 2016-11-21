@@ -23,7 +23,7 @@ public class SessionServiceImplementation implements SessionService {
     UserRepository userRepository;
 
     @Override
-    public Session getToken(String token) {
+    public Session getSession(String token) {
         Session s = sessionRepository.findBySessionToken(token);
         if (s!= null && isExpired(s.getSessionExpire())==false) {
             return s;
