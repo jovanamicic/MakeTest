@@ -57,7 +57,7 @@ $(document).on('click','#registerBtn', function () {
             });
         }
     }
-})
+});
 
 $(document).on('blur',"#email",function () {
     var email = $("#email").val();

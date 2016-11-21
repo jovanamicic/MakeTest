@@ -85,8 +85,6 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User login(UserDTO userToRegister) {
-        int size = userRepository.findAll().size();
-        System.out.println("SIZE: " + size);
         if (userToRegister.getPassword() != null && userToRegister.getEmail()!=null){
             String hashedPassword = MD5Hash.getMD5(userToRegister.getPassword());
             User user = userRepository.findByEmailAndPassword(userToRegister.getEmail(),hashedPassword);

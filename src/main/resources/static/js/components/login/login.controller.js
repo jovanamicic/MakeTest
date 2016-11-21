@@ -2,7 +2,11 @@ var app = angular.module('app.loginform', ['ngCookies']);
 
 app.controller('login.controller', ['$scope', '$http', '$cookies', 'userService', function ($scope, $http, $cookies, userService) {
 
+    $scope.showLoginAlert = false;
     $scope.login = function () {
+        if ($scope.showLoginAlert){
+            $scope.showLoginAlert = false;
+        }
         if ($scope.loginForm.$valid) {
             var data = {
                 "email" : $scope.user.email,
@@ -12,7 +16,7 @@ app.controller('login.controller', ['$scope', '$http', '$cookies', 'userService'
                 var token = response.headers().location.split("/")[6];
                 $cookies.put('make-test-token', token);
             }, function (response) {
-                // TODO: show failure message
+                $scope.showLoginAlert = true;
             });
         }
     };

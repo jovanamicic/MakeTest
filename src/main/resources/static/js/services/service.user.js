@@ -3,7 +3,9 @@ angular.module('makeTest.services').factory('userService',function($http,$cookie
         logout : logout,
         showUser : showUser,
         update : update,
-        login : login
+        login : login,
+        register : register,
+
     };
     return service;
 
@@ -19,6 +21,20 @@ angular.module('makeTest.services').factory('userService',function($http,$cookie
 
 
     };
+    function register(data) {
+        return $http({
+            method: 'POST',
+            url: "/api/users/sessions",
+            data: data,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+
+    };
+
+
     function logout() {
         return $http.delete(apiRoot+'users/sessions/'+ $cookieStore.get('mtt'));
     };
