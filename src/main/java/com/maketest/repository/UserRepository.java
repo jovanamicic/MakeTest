@@ -7,6 +7,8 @@ import com.maketest.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Created by Jovana Micic on 24-Oct-16.
  */
@@ -17,4 +19,5 @@ public interface UserRepository extends PagingAndSortingRepository<User,Integer>
     User findByToken (String token);
     User findByEmailAndPassword (String email, String password);
     User findByUserSession(Session session);
+    List<User> findAll();
 }

@@ -19,6 +19,7 @@ import javax.mail.MessagingException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -61,8 +62,8 @@ public class UserServiceImplementation implements UserService {
         user.setToken(token);
         user.setTokenExpireDate(expireDate);
 
-        userRepository.save(user);
-
+        user = userRepository.save(user);
+        /*
         //Sending email
         String subject = "Activation link";
         String confirmationUrl = "/api/users/activation?token=" + token;
@@ -73,7 +74,7 @@ public class UserServiceImplementation implements UserService {
             emailSender.sendEmail(user.getEmail(), subject, text);
         } catch (MessagingException e) {
             e.printStackTrace();
-        }
+        } */
         return user;
     }
 
