@@ -21,7 +21,8 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = MakeTestApplication.class)
 @WebIntegrationTest
-@TestPropertySource(locations = "classpath:test.properties") //koristi se test baza
+//@TestPropertySource(locations = "classpath:test.properties") //koristi se test baza
+
 public class UserServiceImplementationTest {
 
     @Autowired
