@@ -1,21 +1,24 @@
-/**
- * Created by Milan on 16/11/2016.
- */
 var app = angular.module('app.registerform', ['ngCookies']);
 
 app.controller('register.controller', ['$scope', '$http', '$cookies', 'userService', function ($scope, $http, $cookies, userService) {
 
+    $scope.showRegisterAlert = false;
     $scope.register = function () {
-        if ($scope.loginForm.$valid) {
+        if ($scope.showRegisterAlert){
+            $scope.showRegisterAlert = false;
+        }
+        if ($scope.registerForm.$valid) {
             var data = {
                 "email" : $scope.user.email,
-                "password" : $scope.user.password
+                "password" : $scope.user.password,
+                "firstName" : $scope.user.firstname,
+                "lastName" : $scope.user.lastname
             };
-            userService.login(data).then(function (response) {
-                var token = response.headers().location.split("/")[6];
-                $cookies.put('make-test-token', token);
+            userService.register(data).then(function (response) {
+                var redirection = response.headers().location.login.html;
+                $scope.showRegisterAlert = true;
             }, function (response) {
-                // TODO: show failure message
+                alert("Error");
             });
         }
     };

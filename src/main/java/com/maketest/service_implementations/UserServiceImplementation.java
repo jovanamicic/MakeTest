@@ -79,28 +79,33 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User login(UserDTO userToRegister) {
-        Preconditions.checkNotNull(userToRegister.getEmail());
-        Preconditions.checkNotNull(userToRegister.getPassword());
-        String hashedPassword = MD5Hash.getMD5(userToRegister.getPassword());
-        User user = userRepository.findByEmailAndPassword(userToRegister.getEmail(),hashedPassword);
-        if (user != null){
-            Session userSession = user.getUserSession();
-            if(userSession == null) {
-                //creating user session
-                userSession = new Session();
+        if (userToRegister.getPassword() != null && userToRegister.getEmail()!=null){
+            String hashedPassword = MD5Hash.getMD5(userToRegister.getPassword());
+            User user = userRepository.findByEmailAndPassword(userToRegister.getEmail(),hashedPassword);
+            if (user != null){
+                Session userSession = user.getUserSession();
+                if(userSession == null) {
+                    //creating user session
+                    userSession = new Session();
+                }
+                String sessionToken = UUID.randomUUID().toString();
+                Date sessionExpire = calculateExpiryDate(SESSION_EXPIRATION);
+                userSession.setSessionExpire(sessionExpire);
+                userSession.setSessionToken(sessionToken);
+                sessionRepository.save(userSession);
+
+                //saving user session
+                user.setUserSession(userSession);
+                userRepository.save(user);
+
+                return user;
             }
-            String sessionToken = UUID.randomUUID().toString();
-            Date sessionExpire = calculateExpiryDate(SESSION_EXPIRATION);
-            userSession.setSessionExpire(sessionExpire);
-            userSession.setSessionToken(sessionToken);
-            sessionRepository.save(userSession);
+            else{
+                return null;
+            }
 
-            //saving user session
-            user.setUserSession(userSession);
-            userRepository.save(user);
-
-            return user;
         }
+
         else{
            return null;
         }

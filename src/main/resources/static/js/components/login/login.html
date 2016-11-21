@@ -1,51 +1,40 @@
--<html>
--<head>
-    -    <title>Make your test</title>
-    -    <meta charset="utf-8"/><meta charset="utf-8"/>
-    -    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    -
-    -    <link rel="stylesheet" href="css/indexStyle.css"/>
-    -    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-    -    <link rel="stylesheet" href="css/toastr.css"/>
-    -
-    -    <script src="js/vendor/jquery-3.1.1.js"></script>
-    -    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    -    <script src="js/vendor/toastr.js"></script>
-    -    <script src="js/login.js"></script>
-    -</head>
--<body background="img/background.jpg">
--<div id="transparentBox">
-    -</div>
--<div id="formBox" ng-app="app.loginform" ng-controller="login.controller">
-    -    <form novalidate name="loginForm" class="form" >
-    -        <div class="form-group col-xs-12">
-    -            <img src="img/logo.gif"/>
-    -        </div>
-                <div class="form-group col-xs-12" ng-if="showLoginAlert">
-                    <div class="alert alert-danger">
-                      <p>Wrong email or password</p>.
-                   </div>
-                </div>
+<div>
+<img src="img/background.jpg" style="width: 100%" style="height:100%" />
+</div>
+    <div id="transparentBox">
+    </div>
 
-    -        <div class="form-group col-xs-12">
-    -            <input type="email" name="email"  placeholder="Email" ng-model="user.email" required>
-                    <p class="error" ng-show="loginForm.email.$invalid && loginForm.psw.$touched"> Please, enter a valid email</p>
-    -        </div>
-    -        <div class="form-group col-xs-12" >
-    -            <input type="password" name="psw" placeholder="Password" ng-model="user.password" required>
-                    <p class="error" ng-show="loginForm.psw.$invalid && loginForm.psw.$touched"> Please, enter  password</p>
-    -        </div>
-    -
-    -        <div class="form-group col-xs-12"> <div class="form-group col-xs-12">
-    -            <button type="button" class="btn btn-info form-control" id="loginBtn" ng-click="login()">Log in</button>
-    -        </div>
-    -            <button type="button" class="btn btn-primary form-control" id="loginBtnFb">Log in using Facebook</button>
-    -        </div>
-    -        <div class="form-group col-xs-12">
-    -            <h5>You don't have account? <a href="#" id="registerLink">Register here</a></h5>
-    -        </div>
-    -
-    -    </form>
-    -</div>
--</body>
--</html>
+    <div id="formBox" ng-app="app.loginform" ng-controller="login.controller as loginctrl">
+        <form novalidate name="loginForm" class="form">
+            <div class="form-group col-xs-12">
+                <img src="../../../img/logo.gif"/>
+            </div>
+            <div class="form-group col-xs-12" ng-if="showLoginAlert">
+                <div class="alert alert-danger">
+                    <p>Wrong email or password</p>
+                </div>
+            </div>
+            <div class="form-group col-xs-12">
+                <input type="email" name="email" placeholder="Email" ng-model="user.email" required>
+                <p class="error" ng-show="loginForm.email.$invalid && loginForm.psw.$touched"> Please, enter a valid
+                    email</p>
+            </div>
+            <div class="form-group col-xs-12">
+                <input type="password" name="psw" placeholder="Password" ng-model="user.password" required>
+                <p class="error" ng-show="loginForm.psw.$invalid && loginForm.psw.$touched"> Please, enter password</p>
+            </div>
+            <div class="form-group col-xs-12">
+                <div class="form-group col-xs-12">
+                    <button type="button" class="btn btn-info form-control" id="loginBtn" ng-click="loginctrl.login()">
+                        Log in
+                    </button>
+                </div>
+                <button type="button" class="btn btn-primary form-control" id="loginBtnFb">Log in using Facebook
+                </button>
+            </div>
+            <div class="form-group col-xs-12">
+                <h5>You don't have account? <a href="#" id="registerLink">Register here</a></h5>
+            </div>
+
+        </form>
+    </div>
