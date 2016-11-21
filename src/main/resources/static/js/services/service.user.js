@@ -24,7 +24,7 @@ angular.module('makeTest.services').factory('userService',function($http,$cookie
     function register(data) {
         return $http({
             method: 'POST',
-            url: "/api/users/sessions",
+            url: "/api/users",
             data: data,
             headers: {
                 'Content-Type': 'application/json'

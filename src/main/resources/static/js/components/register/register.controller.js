@@ -1,9 +1,10 @@
 var app = angular.module('app.registerform', ['ngCookies']);
 
-app.controller('register.controller', ['$scope', '$http', '$cookies', 'userService', function ($scope, $http, $cookies, userService) {
+app.controller('register.controller', ['$location', '$scope', '$http', '$cookies', 'userService', function ($location, $scope, $http, $cookies, userService) {
 
     $scope.showRegisterAlert = false;
     $scope.showPasswordAlert = false;
+    $scope.showMailAlert = false;
     $scope.register = function () {
         if ($scope.showRegisterAlert){
             $scope.showRegisterAlert = false;
@@ -19,11 +20,11 @@ app.controller('register.controller', ['$scope', '$http', '$cookies', 'userServi
             };
 
             userService.register(data).then(function (response) {
-                var redirection = response.headers().location.login.html;
                 $scope.showRegisterAlert = true;
+                $location.path("/login");
 
             }, function (response) {
-                alert("Error");
+                $scope.showMailAlert = true;
             });
 
             } else {
