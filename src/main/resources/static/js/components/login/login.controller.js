@@ -16,7 +16,6 @@ app.controller('login.controller', ['$scope', '$http', '$cookies', 'userService'
                 var token = response.headers().location.split("/")[6];
                 $cookies.put('make-test-token', token);
             }, function (response) {
-                // TODO: show failure message
                 $scope.showLoginAlert = true;
             });
         }

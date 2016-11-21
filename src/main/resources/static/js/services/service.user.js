@@ -4,7 +4,8 @@ angular.module('makeTest.services').factory('userService',function($http,$cookie
         showUser : showUser,
         update : update,
         login : login,
-        register : register
+        register : register,
+
     };
     return service;
 
@@ -32,6 +33,8 @@ angular.module('makeTest.services').factory('userService',function($http,$cookie
 
 
     };
+
+
     function logout() {
         return $http.delete(apiRoot+'users/sessions/'+ $cookieStore.get('mtt'));
     };
