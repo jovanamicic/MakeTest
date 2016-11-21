@@ -20,7 +20,12 @@ makeTest.config(['$routeProvider',function ($routeProvider) {
         })
         .when('/login',{
             templateUrl : "../js/components/login/login.html",
-            controller : "login.controller",
+            controller : "login.controller"
+
+        })
+        .when('/register',{
+            templateUrl : "../js/components/register/register.html",
+            controller : "register.controller"
 
         })
         .otherwise({
