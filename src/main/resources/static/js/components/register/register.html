@@ -19,6 +19,11 @@
                  <p>Your passwords do not match please try again!</p>
              </div>
          </div>
+         <div class="form-group col-xs-12" ng-if="showMailAlert">
+             <div class="alert alert-danger">
+                 <p>Email already exists, plase try again!</p>
+             </div>
+         </div>
         <div class="form-group col-xs-12">
             <p class="error" ng-show="registerForm.email.$invalid && registerForm.email.$touched"> Please, enter a valid email</p>
             <input type="email" name="email"  placeholder="Email" ng-model="user.email" required>
@@ -37,7 +42,7 @@
         </div>
         <div class="form-group col-xs-12" >
             <p class="error" ng-show="registerForm.psw.$invalid && registerForm.psw.$touched"> Please repeat password</p>
-            <input type="passwordrpt" name="pswrpt" placeholder="RepeatPassword" ng-model="user.repeatpassword" required>
+            <input type="password" name="pswrpt" placeholder="RepeatPassword" ng-model="user.repeatpassword" required>
         </div>
         <div class="form-group col-xs-12">
             <button type="button" class="btn btn-info form-control" id="registerBtn" ng-click="register()">Register</button>
