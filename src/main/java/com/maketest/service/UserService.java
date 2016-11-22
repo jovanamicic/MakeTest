@@ -11,10 +11,12 @@ import java.util.List;
  */
 public interface UserService {
     User findOne(String email);
+    User findOne(int id);
     User save(User user);
     User update(User user);
     User login (UserDTO userToRegister);
     boolean emailExists(String email);
     boolean activateUser(String token);
     User getUserProfile(String token);
+    List<User> findAll();
 }

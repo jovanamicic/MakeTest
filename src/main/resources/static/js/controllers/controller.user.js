@@ -34,6 +34,8 @@ function UserController($scope, $cookies, $location, userService) {
         });
     };
 
+    //ovu prebaci
+
     vm.update = function () {
             userService.update(vm.data).then(function(response){
                 vm.data = response.data;

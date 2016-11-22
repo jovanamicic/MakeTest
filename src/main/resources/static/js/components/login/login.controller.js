@@ -15,10 +15,16 @@ app.controller('login.controller', ['$scope', '$http', '$cookies', 'userService'
             userService.login(data).then(function (response) {
                 var token = response.headers().location.split("/")[6];
                 $cookies.put('make-test-token', token);
+                //pozvati iz user service checkToken
+                //response bi trebao biti profil korisnika
+                // da li ovde sad treba da se napise get api/users/sessions/{token} a to vraca profil korisnika
             }, function (response) {
                 $scope.showLoginAlert = true;
             });
         }
     };
+
+
+    /users/5 -> /api/users/5 (header mtt -. )  <-
 
 }]);

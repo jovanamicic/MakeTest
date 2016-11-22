@@ -5,6 +5,7 @@ angular.module('makeTest.services').factory('userService',function($http,$cookie
         update : update,
         login : login,
         register : register,
+        checkToken : checkToken
 
     };
     return service;
@@ -32,6 +33,10 @@ angular.module('makeTest.services').factory('userService',function($http,$cookie
         });
 
 
+    };
+
+    function checkToken() {
+        return $http.get(apiRoot+'users/sessions/'+ $cookieStore.get('mtt'));
     };
 
 
