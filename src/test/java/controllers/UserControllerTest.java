@@ -36,10 +36,9 @@ import service.UserUtilityService;
 
 import javax.annotation.PostConstruct;
 import java.nio.charset.Charset;
+
 import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -48,6 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = MakeTestApplication.class)
 @ActiveProfiles("test")
+@Transactional
 public class UserControllerTest {
 
     private MockMvc mockMvc;
@@ -82,7 +82,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @Transactional
+
     public void testLoginValid() throws Exception {
         SessionRequest createLoginRequest = createAuthenticationRequest();
         String content = mapper.writeValueAsString(createLoginRequest);
@@ -113,7 +113,6 @@ public class UserControllerTest {
     }
 
     @Test
-    @Transactional
     public void testRegisterNewUserValid() throws Exception {
         UserDTO u = UserBuilder.random().build();  //kreira random podatke kao sa forme
         String content = mapper.writeValueAsString(u);
@@ -151,7 +150,6 @@ public class UserControllerTest {
     }
 
     @Test
-    @Transactional
     public void testUpdateUserValid() throws Exception {
         UserRequest createUpdateRequest = createRequest();
         createUpdateRequest.setLastName("Changed name");
@@ -173,16 +171,15 @@ public class UserControllerTest {
 
     //GETTING USER
     @Test
-    @Transactional
     public void testUserProfileValid() throws Exception {
         //Korisnik se unapred doda u bazu a ovde se vrati userDTO
         UserRequest u = createRequest();
         //Uloguj ga
-        User loggedUser = userService.login(new UserDTO(0,u.getEmail(),null,null,u.getPassword(),null)); //saljem samo email i psw
+        User loggedUser = userService.login(new UserDTO(0, u.getEmail(), null, null, u.getPassword(), null)); //saljem samo email i psw
         String token = loggedUser.getUserSession().getSessionToken();
         int id = loggedUser.getId();
 
-        MvcResult result = mockMvc.perform(get("/api/users/{id}",id)
+        MvcResult result = mockMvc.perform(get("/api/users/{id}", id)
                 .header("mtt", token))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -191,12 +188,11 @@ public class UserControllerTest {
     }
 
     @Test
-    @Transactional
     public void testUserProfileWrongId() throws Exception {
         //Korisnik se unapred doda u bazu a ovde se vrati userDTO
         UserRequest u = createRequest();
         //Uloguj ga
-        User loggedUser = userService.login(new UserDTO(0,u.getEmail(),null,null,u.getPassword(),null)); //saljem samo email i psw
+        User loggedUser = userService.login(new UserDTO(0, u.getEmail(), null, null, u.getPassword(), null)); //saljem samo email i psw
         String token = loggedUser.getUserSession().getSessionToken();
 
         int id = 99999999;  //id koji ne postoji u bp
@@ -208,13 +204,12 @@ public class UserControllerTest {
     }
 
     @Test
-    @Transactional
     public void testUserProfileWrongToken() throws Exception {
         //Korisnik se unapred doda u bazu a ovde se vrati userDTO
         UserRequest u = createRequest();
         //Uloguj ga
-        User loggedUser = userService.login(new UserDTO(0,u.getEmail(),null,null,u.getPassword(),null));
-        String token = loggedUser.getUserSession().getSessionToken()+"wrongToken"; //token nije isti kao sto ga ima user sa tim id-om
+        User loggedUser = userService.login(new UserDTO(0, u.getEmail(), null, null, u.getPassword(), null));
+        String token = loggedUser.getUserSession().getSessionToken() + "wrongToken"; //token nije isti kao sto ga ima user sa tim id-om
 
         int id = loggedUser.getId();
 
@@ -225,33 +220,56 @@ public class UserControllerTest {
 
     //GETTING SESSION
     @Test
-    @Transactional
     public void testGetTokenValid() throws Exception {
         UserRequest u = createRequest();
         //Uloguj ga
-        User loggedUser = userService.login(new UserDTO(0,u.getEmail(),null,null,u.getPassword(),null));
+        User loggedUser = userService.login(new UserDTO(0, u.getEmail(), null, null, u.getPassword(), null));
         String token = loggedUser.getUserSession().getSessionToken();
 
         MvcResult result = mockMvc.perform(get("/api/users/sessions/{token}", token))
-                                    .andExpect(status().isOk())
-                                    .andReturn();
+                .andExpect(status().isOk())
+                .andReturn();
 
         assertNotNull(result);
 
         String retVal = result.getResponse().getContentAsString();
         UserRequest userResponse = mapper.readValue(retVal, UserRequest.class);
-        assertEquals((int)loggedUser.getId(), userResponse.getId());
+        assertEquals((int) loggedUser.getId(), userResponse.getId());
     }
 
     @Test
     public void testGetTokenNotFound() throws Exception {
         UserRequest u = createRequest();
         //Uloguj ga
-        User loggedUser = userService.login(new UserDTO(0,u.getEmail(),null,null,u.getPassword(),null));
-        String token = loggedUser.getUserSession().getSessionToken()+"invalidToken"; //token nije isti kao sto ga ima user sa tim id-om
+        User loggedUser = userService.login(new UserDTO(0, u.getEmail(), null, null, u.getPassword(), null));
+        String token = loggedUser.getUserSession().getSessionToken() + "invalidToken"; //token nije isti kao sto ga ima user sa tim id-om
 
         mockMvc.perform(get("/api/users/sessions/{token}", token))
                 .andExpect(status().isNotFound());
+    }
+
+
+    //LOG OUT
+    @Test
+    public void testLogoutNotFound() throws Exception {
+        UserRequest u = createRequest();
+        //Uloguj ga
+        User loggedUser = userService.login(new UserDTO(0, u.getEmail(), null, null, u.getPassword(), null));
+        String token = loggedUser.getUserSession().getSessionToken() + "invalidToken"; //token nije isti kao sto ga ima user sa tim id-om
+
+        mockMvc.perform(delete("/api/users/sessions/{token}", token))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testLogoutValid() throws Exception {
+        UserRequest u = createRequest();
+        //Uloguj ga
+        User loggedUser = userService.login(new UserDTO(0, u.getEmail(), null, null, u.getPassword(), null));
+        String token = loggedUser.getUserSession().getSessionToken(); //token nije isti kao sto ga ima user sa tim id-om
+
+        mockMvc.perform(delete("/api/users/sessions/{token}", token))
+                .andExpect(status().isOk());
     }
 
     public SessionRequest createAuthenticationRequest() {
@@ -263,7 +281,7 @@ public class UserControllerTest {
     public UserRequest createRequest() {
         UserDTO u = UserBuilder.random().build();
         saveUser(u);
-        return new UserRequest(u.getId(),u.getFirstName(), u.getLastName(), u.getPassword(), u.getEmail());
+        return new UserRequest(u.getId(), u.getFirstName(), u.getLastName(), u.getPassword(), u.getEmail());
     }
 
     public void saveUser(UserDTO u) {

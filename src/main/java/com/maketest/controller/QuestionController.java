@@ -49,7 +49,7 @@ public class QuestionController {
             savedAnswers.add(ans);
         }
         question.setAnswers(savedAnswers);
-
+        //TODO dodati cuvanje pitanja u test
         question = questionService.save(question);
         return new ResponseEntity<>(new QuestionDTO(question), HttpStatus.OK);
     }

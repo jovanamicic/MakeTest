@@ -39,7 +39,11 @@ public class UserController {
     @Autowired
     SessionService sessionService;
 
-    /* Creating new user*/
+    /* Creating new user
+       Params: UserDTO : email, password, first name, last name.
+       Return: UserDTO : id, email, password, first name, last name and status Created.
+       Error : Returns bad request.
+    */
     @RequestMapping( method = RequestMethod.POST)
     public ResponseEntity<UserDTO> registerNewUser(@RequestBody UserDTO u) {
         if (userService.emailExists(u.getEmail())){
@@ -75,7 +79,11 @@ public class UserController {
         return new ResponseEntity<String>(headers, HttpStatus.SEE_OTHER);
     }
 
-    /* Login and creating new session for logged user.*/
+    /* Login and creating new session for logged user.
+       Params: UserDTO : email and password.
+       Return: Status Created.
+       Error : Bad request.
+    */
     @RequestMapping(value = "/sessions", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody UserDTO userToLogin, UriComponentsBuilder uriBuilder) {
         User retVal = userService.login(userToLogin);
@@ -90,6 +98,12 @@ public class UserController {
         }
     }
 
+    /*
+        Function for checking if token is valid.
+        Params: String token.
+        Return: User profile and status OK.
+        Error: Status Not Found.
+     */
     @RequestMapping(value = "/sessions/{token}", method = RequestMethod.GET)
     public ResponseEntity<UserProfileDTO> getToken(@PathVariable String token) {
         Session validToken = sessionService.getSession(token);
@@ -102,8 +116,12 @@ public class UserController {
         }
     }
 
-    /*  Deleting session token after logging out.*/
-    @RequestMapping(value = "/sessions/{token}", method = RequestMethod.DELETE) //***testirati
+    /*  Deleting session token after logging out.
+        Params: String token.
+        Return: Status OK.
+        Error: Status Not Found.
+    */
+    @RequestMapping(value = "/sessions/{token}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> logout(@PathVariable String token)
     {
         Session session = sessionService.findBySessionToken(token);
@@ -116,7 +134,11 @@ public class UserController {
         }
     }
 
-    /* Getting user profile. */
+    /* Getting user profile.
+       Params: int id of user.
+       Return: user profile and status OK.
+       Error: Status Unathorized or Not Found.
+    */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserProfileDTO> userProfile(@RequestHeader("mtt") String sessionToken, @PathVariable int id) {
             User user = userService.findOne(id);
@@ -135,9 +157,13 @@ public class UserController {
             }
     }
 
-    /* Method updates user data.*/
+    /* Method updates user data.
+       Params: UserDTO: firstName, lastName, password.
+       Return: user profile and status OK.
+       Error: status Bad request.
+    */
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO u){
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO u){  //TODO ispraviti da user session je sessionDTO
         User user = userService.findOne(u.getEmail());
         if (user == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
