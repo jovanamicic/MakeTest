@@ -28,6 +28,11 @@ makeTest.config(['$routeProvider',function ($routeProvider) {
             controller : "register.controller"
 
         })
+        .when('/profile',{
+            templateUrl : "../js/components/profile/profile.html",
+            controller : "profile.controller"
+
+        })
         .otherwise({
            redirectTo : '/'
         });

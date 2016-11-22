@@ -1,14 +1,29 @@
-angular.module('makeTest.services').factory('userService',function($http,$cookieStore){
+angular.module('makeTest.services').factory('userService',function($http,$cookies,$localStorage){
     var service = {
         logout : logout,
         showUser : showUser,
         update : update,
         login : login,
         register : register,
-        checkToken : checkToken
-
+        checkToken : checkToken,
+        setUserId: setUserId,
+        getUserId: getUserId,
+        deleteUserId: deleteUserId
     };
     return service;
+
+    function setUserId(id){
+        $localStorage.mttUserId = id;
+    }
+
+    function getUserId(){
+        if($localStorage.mttUserId){
+            return $localStorage.mttUserId;
+        }
+    }
+    function deleteUserId() {
+        delete $localStorage.mttUserId;
+    }
 
     function login(data) {
         return $http({
@@ -19,9 +34,8 @@ angular.module('makeTest.services').factory('userService',function($http,$cookie
                 'Content-Type': 'application/json'
             }
         });
-
-
     };
+
     function register(data) {
         return $http({
             method: 'POST',
@@ -36,25 +50,30 @@ angular.module('makeTest.services').factory('userService',function($http,$cookie
     };
 
     function checkToken() {
-        return $http.get(apiRoot+'users/sessions/'+ $cookieStore.get('mtt'));
+        return $http.get(apiRoot+'users/sessions/'+ $cookies.get('mtt'));
     };
 
 
     function logout() {
-        return $http.delete(apiRoot+'users/sessions/'+ $cookieStore.get('mtt'));
+        return $http.delete(apiRoot+'users/sessions/'+ $cookies.get('mtt'));
     };
 
     function showUser() {
-        url = apiRoot+'users/userProfile';
+        var id = getUserId();
+        url = apiRoot+'users/'+id;
         return $http.get(url, {
-            headers:{ "mtt" : $cookieStore.get('mtt')}
+            headers:{ "mtt" : $cookies.get('mtt')}
         });
     };
 
     function update(user) {
-      url = apiRoot+'users';
-        return $http.put(url, user , {
-            headers:{ "mtt" : $cookieStore.get('mtt')}
+        return $http({
+            method: 'PUT',
+            url: "/api/users",
+            data: user,
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
     };
 
