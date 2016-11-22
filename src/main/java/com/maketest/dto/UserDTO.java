@@ -12,15 +12,21 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String password;
-    private Session userSession;
+    private SessionDTO userSession;
 
     public UserDTO(User u){
-        this(u.getId(),u.getEmail(),u.getFirstName(),u.getLastName(),u.getPassword(),u.getUserSession());
+        this.id = u.getId();
+        this.email = u.getEmail();
+        this.firstName = u.getFirstName();
+        this.lastName = u.getLastName();
+        this.password = u.getPassword();
+        Session userS = u.getUserSession();
+        this.userSession = new SessionDTO(userS.getId(),userS.getSessionToken(), userS.getSessionExpire());
     }
 
     public UserDTO(){}
 
-    public UserDTO(int id, String email, String firstName, String lastName, String password, Session userSession) {
+    public UserDTO(int id, String email, String firstName, String lastName, String password, SessionDTO userSession) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -37,11 +43,11 @@ public class UserDTO {
         this.id = id;
     }
 
-    public Session getUserSession() {
+    public SessionDTO getUserSession() {
         return userSession;
     }
 
-    public void setUserSession(Session userSession) {
+    public void setUserSession(SessionDTO userSession) {
         this.userSession = userSession;
     }
 

@@ -28,7 +28,11 @@ public class TestController {
     @Autowired
     UserService userService;
 
-    /* Creating new test. */
+    /* Creating new test.
+       Params: TestDTO : int id, String testName, String description, String category.
+       Return: Status Created.
+       Error : Stauts Bad Request.
+     */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<TestDTO> addNewTest(@RequestBody TestDTO t, @RequestHeader("mtt") String token){
         User user = userService.getUserProfile(token);
@@ -37,26 +41,28 @@ public class TestController {
         test.setDescription(t.getDescription());
         test.setCategory(t.getCategory());
         test.setUserTests(user);
-        test.setCreatingDate(new Date());  //TODO dodati cuvanje pitanja
+        test.setCreatingDate(new Date());
         test = testService.save(test);
-        return new ResponseEntity<>(new TestDTO(test), HttpStatus.OK);
+        return new ResponseEntity<>(new TestDTO(test), HttpStatus.CREATED);
     }
 
     /* Updating test info.*/
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<TestDTO> updateTest(@RequestBody TestDTO t, @RequestHeader("mtt") String token){
+    public ResponseEntity<TestDTO> updateTest(@RequestBody TestDTO t){
         Test test = testService.findOne(t.getId());
         if(test == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         test.setTestName(t.getTestName());
         test.setDescription(t.getDescription());
-        test.setCategory(t.getCategory());  //TODO dodati cuvanje pitanja
+        test.setCategory(t.getCategory());
         testService.save(test);
         return new ResponseEntity<>(new TestDTO(test), HttpStatus.OK);
     }
 
-    /* Getting all tests.*/
+    /* Getting all tests.
+    *  Return : list of all tests.
+    * */
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<List<TestDTO>> getAllTests(){
         List<Test> tests = testService.findAll();

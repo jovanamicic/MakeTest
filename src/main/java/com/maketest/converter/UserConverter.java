@@ -34,11 +34,4 @@ public class UserConverter {
         return retVal;
     }
 
-    public static UserDTO userToUserDTO(User user) {
-        if (user == null)
-            return null;
-
-        UserDTO retVal = new UserDTO(user.getId(),user.getEmail(),user.getFirstName(),user.getLastName(),user.getPassword(),user.getUserSession());
-        return retVal;
-    }
 }
