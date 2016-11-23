@@ -7,6 +7,7 @@ import com.maketest.model.Question;
 import com.maketest.model.Test;
 import com.maketest.service.AnswerService;
 import com.maketest.service.QuestionService;
+import com.maketest.service.TestService;
 import com.sun.mail.iap.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,12 +32,30 @@ public class QuestionController {
     @Autowired
     AnswerService answerService;
 
+    @Autowired
+    TestService testService;
+
+
     /* Method creates new question.  */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<QuestionDTO> addNewQuestion(@RequestBody QuestionDTO q, @RequestHeader("mtt") String token){
         Question question = new Question();
         question.setQuestionText(q.getQuestionText());
         question.setCorrectAnswer(q.getCorrectAnswer());
+
+        //setovanje testa u pitanju i pitanja u testu
+        Test t = testService.findOne(q.getTestId());
+        Set<Question> questionsTest = t.getQuestions();
+        if(questionsTest == null){
+            questionsTest = new HashSet<>();
+        }
+        questionsTest.add(question);
+        t.setQuestions(questionsTest);
+        testService.save(t);
+
+        question.setTestQuestions(t);
+
+
         question = questionService.save(question);
         //creating answers
         Set<Answer> savedAnswers = new HashSet<>();
@@ -49,7 +68,7 @@ public class QuestionController {
             savedAnswers.add(ans);
         }
         question.setAnswers(savedAnswers);
-        //TODO dodati cuvanje pitanja u test
+
         question = questionService.save(question);
         return new ResponseEntity<>(new QuestionDTO(question), HttpStatus.OK);
     }

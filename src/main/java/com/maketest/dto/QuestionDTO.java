@@ -16,6 +16,7 @@ public class QuestionDTO {
     private String questionText;
     private String correctAnswer;
     private Set<AnswerDTO> answers;
+    private int testId;
 
     public QuestionDTO(Question q){
         Set<AnswerDTO> qanswers = new HashSet<>();
@@ -26,15 +27,17 @@ public class QuestionDTO {
         this.questionText = q.getQuestionText();
         this.correctAnswer = q.getCorrectAnswer();
         this.answers = qanswers;
+        this.testId = q.getTestQuestions().getId();
     }
 
     public QuestionDTO(){}
 
-    public QuestionDTO(Integer id, String questionText, String correctAnswer, Set<AnswerDTO> answers) {
+    public QuestionDTO(Integer id, String questionText, String correctAnswer, Set<AnswerDTO> answers, int testId) {
         this.id = id;
         this.questionText = questionText;
         this.correctAnswer = correctAnswer;
         this.answers = answers;
+        this.testId = testId;
     }
 
     public int getId() {
@@ -71,5 +74,13 @@ public class QuestionDTO {
 
     public void setAnswers(Set<AnswerDTO> answers) {
         this.answers = answers;
+    }
+
+    public int getTestId() {
+        return testId;
+    }
+
+    public void setTestId(int testId) {
+        this.testId = testId;
     }
 }

@@ -163,7 +163,7 @@ public class UserController {
        Error: status Bad request.
     */
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO u){  //TODO ispraviti da user session je sessionDTO
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO u){
         User user = userService.findOne(u.getEmail());
         if (user == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
