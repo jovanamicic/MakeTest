@@ -21,12 +21,18 @@ makeTest.config(['$routeProvider',function ($routeProvider) {
         .when('/login',{
             templateUrl : "../js/components/login/login.html",
             controller : "login.controller"
-
         })
         .when('/register',{
             templateUrl : "../js/components/register/register.html",
             controller : "register.controller"
-
+        })
+        .when('/profile',{
+            templateUrl : "../js/components/profile/profile.html",
+            controller : "profile.controller"
+        })
+        .when('/createtest',{
+            templateUrl : "../js/components/createTest/createTest.html",
+            controller : "createTest.controller"
         })
         .otherwise({
            redirectTo : '/'

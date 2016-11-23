@@ -1,30 +1,34 @@
 var app = angular.module('app.loginform', ['ngCookies']);
 
-app.controller('login.controller', ['$scope', '$http', '$cookies', 'userService', function ($scope, $http, $cookies, userService) {
+app.controller('login.controller', ['$scope', '$http', '$cookies', 'userService', '$localStorage', '$location', function ($scope, $http, $cookies, userService, $localStorage, $location) {
+    var vm = this;
 
-    $scope.showLoginAlert = false;
-    $scope.login = function () {
-        if ($scope.showLoginAlert){
-            $scope.showLoginAlert = false;
+    vm.showLoginAlert = false;
+    vm.login = function () {
+        if (vm.showLoginAlert){
+            vm.showLoginAlert = false;
         }
         if ($scope.loginForm.$valid) {
             var data = {
-                "email" : $scope.user.email,
-                "password" : $scope.user.password
+                "email" : vm.user.email,
+                "password" : vm.user.password
             };
             userService.login(data).then(function (response) {
                 var token = response.headers().location.split("/")[6];
-                $cookies.put('make-test-token', token);
-                //pozvati iz user service checkToken
-                //response bi trebao biti profil korisnika
-                // da li ovde sad treba da se napise get api/users/sessions/{token} a to vraca profil korisnika
+                $cookies.put('mtt', token);
+                userService.checkToken().then(function (response) {
+                    userService.setUserId(response.data.id);
+                    $location.path("/profile");
+                }, function (response) {
+
+                });
             }, function (response) {
-                $scope.showLoginAlert = true;
+                vm.showLoginAlert = true;
             });
         }
     };
 
 
-    /users/5 -> /api/users/5 (header mtt -. )  <-
+   // /users/5 -> /api/users/5 (header mtt -. )  <-
 
 }]);

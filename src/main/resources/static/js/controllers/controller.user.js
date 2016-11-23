@@ -24,26 +24,4 @@ function UserController($scope, $cookies, $location, userService) {
             console.log("Error");
         });
     };
-
-    vm.showUser = function () {
-
-        userService.showUser().then(function (response) {
-            vm.data = response.data;
-        }, function () {
-            console.log("Error");
-        });
-    };
-
-    //ovu prebaci
-
-    vm.update = function () {
-            userService.update(vm.data).then(function(response){
-                vm.data = response.data;
-                vm.data.password = "";
-                vm.data.repeatPassword = "";
-                toastr.success("Your profile is successfully updated.");
-            },function () {
-                console.log("Error");
-            });
-    };
 }

@@ -6,7 +6,11 @@ var app = angular.module('makeTest',
     'makeTest.directives',
     'ngCookies',
     'app.loginform',
-    'app.registerform'
+    'app.registerform',
+    'app.profile',
+    'ngStorage',
+    'app.createTest'
+
 ]);
 
 var apiRoot = 'http://localhost:8080/api/';
