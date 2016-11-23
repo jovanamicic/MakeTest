@@ -6,6 +6,7 @@ var app = angular.module('app.profile', ['ngCookies']);
 app.controller('profile.controller', ['$scope', '$http', '$cookies', 'userService', function ($scope, $http, $cookies, userService) {
     var vm = this;
 
+    vm.showProfileAlert = false;
     vm.showUser = function () {
 
         userService.showUser().then(function (response) {
@@ -17,7 +18,8 @@ app.controller('profile.controller', ['$scope', '$http', '$cookies', 'userServic
 
     vm.update = function () {
         userService.update(vm.user).then(function (response) {
-            console.log(response.data.id);
+            vm.user = response.data;
+            vm.showProfileAlert = true;
         }, function () {
             console.log("Error");
         });

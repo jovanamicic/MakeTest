@@ -32,12 +32,16 @@
         <div class="panel-heading text-center">
             <h1><span class="glyphicon glyphicon-user"></span> Account settings</h1>
         </div>
+
         <div class="panel-body">
             <!--   <img id="userPhoto" ng-src="{{user.data.profilePhotoRelativePath}}" style="padding-top: 5%; padding-right: 8%; padding-bottom: 5%; padding-left: 8%;">
              <button id="changePhotoBtn" type="button" class="btn btn-info" style="margin: 10%; padding-left: 8%">Change photo</button>  -->
             <form novalidate name="registerForm" class="form" >
-
-
+                <div class="form-group col-xs-12" ng-if="showProfileAlert">
+                    <div class="alert alert-danger">
+                        <p>Login successful!</p>
+                    </div>
+                </div>
             <div class="form-group col-xs-12">
                 <!--<p class="error" ng-show="registerForm.email.$invalid && registerForm.email.$touched"> Please, enter a valid email</p>-->
                 <input type="email" class="form-control" name="email"  placeholder="Email" ng-model="profilectrl.user.email" disabled/>
@@ -51,13 +55,12 @@
                 <input type="text" class="form-control" name="lastname" ng-model="profilectrl.user.lastName" placeholder="Last Name" required>
             </div>
             <div class="form-group col-xs-12" >
-                <p class="error" ng-show="registerForm.psw.$invalid && registerForm.psw.$touched"> Please enter password</p>
-                <input type="password" class="form-control" name="psw" placeholder="Password" ng-model="profilectrl.user.password" required>
+                <input type="password" class="form-control" name="psw" placeholder="Password" ng-model="profilectrl.user.password">
             </div>
             <div class="form-group col-xs-12" >
-                <p class="error" ng-show="registerForm.psw.$invalid && registerForm.psw.$touched"> Please repeat password</p>
-                <input type="password" class="form-control" name="pswrpt" placeholder="RepeatPassword" ng-model="profilectrl.user.repeatpassword" required>
+                <input type="password" class="form-control" name="pswrpt" placeholder="RepeatPassword" ng-model="profilectrl.user.repeatpassword">
             </div>
+
             <div class="form-group col-xs-12">
                 <button type="submit" class="form-control" class="btn btn-info form-control" id="registerBtn" ng-click="profilectrl.update()">SAVE</button>
             </div>

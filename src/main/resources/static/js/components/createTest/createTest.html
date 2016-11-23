@@ -1,0 +1,70 @@
+<div ng-controller="createTest.controller" ng-app="app.createTest" class="col-xs-4 col-xs-offset-4">
+    <div class="panel panel-default">
+        <div class=" panel-heading text-center">
+            <h1><span class="glyphicon glyphicon-file"></span> Test</h1>
+        </div>
+        <div class="panel-body">
+            <form name="testForm">
+                <div class="form-group">
+                    <label for="testName">Test name:</label>
+                    <input type="text" class="form-control" id="testName" name="testName" placeholder="Enter test name" ng-model="test.data.testName">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea type="text" class="form-control" id="description" name="description"
+                              placeholder="Enter test description" ng-model="test.data.description"></textarea>
+                </div>
+                <div class="form-group" data-ng-class="{'has-error':!testForm.category.$valid}">
+                    <label for="category">Category:</label>
+                    <input type="text" class="form-control" id="category" name="category" placeholder="Enter test category" ng-model="test.data.category">
+                    <span class="help-block" data-ng-show="testForm.category.$error.required">This is required.</span>
+                </div>
+
+
+                <button type="button" class="btn btn-default pull-right" ng-click="test.save()">Save</button>
+                <button type="button" class="btn btn-default pull-right" ng-click="">Add question</button>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class=" panel-heading text-center">
+            <h1><span class="glyphicon glyphicon-pencil"></span> Questions</h1>
+        </div>
+        <div class="panel-body">
+            <!-- Collapse panels -->
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href=".q1">
+                                Question 1.</a>
+                        </h4>
+                    </div>
+                    <div id="q1" class="panel-collapse collapse q1">
+                        <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                            minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                            commodo consequat.
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href=".q2">
+                                Question 2.</a>
+                        </h4>
+                    </div>
+                    <div id="q2" class="panel-collapse collapse q2">
+                        <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                            minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                            commodo consequat.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -8,7 +8,8 @@ var app = angular.module('makeTest',
     'app.loginform',
     'app.registerform',
     'app.profile',
-    'ngStorage'
+    'ngStorage',
+    'app.createTest'
 
 ]);
 
