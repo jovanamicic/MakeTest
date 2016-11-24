@@ -1,1 +1,59 @@
+<<<<<<< HEAD
 <h1>REGISTER PAGE</h1>
+=======
+
+<div>
+    <img src="img/background.jpg" style="width: 100%" style="height:100%" />
+</div>
+<div id="transparentBox">
+</div>
+<div id="formBox" ng-app="app.registerform" ng-controller="register.controller as registerctrl">
+     <form novalidate name="registerForm" class="form" >
+        <div class="form-group col-xs-12">
+            <img src="/img/logo.gif"/>
+        </div>
+        <div class="form-group col-xs-12" ng-if="showRegisterAlert">
+            <div class="alert alert-danger">
+                <p>Email with activation link is sent to your email address!</p>
+            </div>
+        </div>
+         <div class="form-group col-xs-12" ng-if="showPasswordAlert">
+             <div class="alert alert-danger">
+                 <p>Your passwords do not match please try again!</p>
+             </div>
+         </div>
+         <div class="form-group col-xs-12" ng-if="showMailAlert">
+             <div class="alert alert-danger">
+                 <p>Email already exists, plase try again!</p>
+             </div>
+         </div>
+        <div class="form-group col-xs-12">
+            <p class="error" ng-show="registerForm.email.$invalid && registerForm.email.$touched"> Please, enter a valid email</p>
+            <input type="email" name="email"  placeholder="Email" ng-model="registerctrl.user.email" required>
+        </div>
+        <div class="form-group col-xs-12">
+            <p class="error" ng-show="registerForm.firstname.$invalid && registerForm.lastname.$touched"> Please, enter your first name</p>
+            <input type="text" name="firstname" ng-model="registerctrl.user.firstname" placeholder="First Name" required>
+        </div>
+        <div class="form-group col-xs-12">
+            <p class="error" ng-show="registerForm.lastname.$invalid && registerForm.psw.$touched"> Please, enter your last name</p>
+            <input type="text" name="lastname" ng-model="registerctrl.user.lastname" placeholder="Last Name" required>
+        </div>
+        <div class="form-group col-xs-12" >
+            <p class="error" ng-show="registerForm.psw.$invalid && registerForm.psw.$touched"> Please enter password</p>
+            <input type="password" name="psw" placeholder="Password" ng-model="registerctrl.user.password" required>
+        </div>
+        <div class="form-group col-xs-12" >
+            <p class="error" ng-show="registerForm.psw.$invalid && registerForm.psw.$touched"> Please repeat password</p>
+            <input type="password" name="pswrpt" placeholder="RepeatPassword" ng-model="registerctrl.user.repeatpassword" required>
+        </div>
+        <div class="form-group col-xs-12">
+            <button type="button" class="btn btn-info form-control" id="registerBtn" ng-click="registerctrl.register()">Register</button>
+        </div>
+        <div class="form-group col-xs-12">
+            <h5>You already have account? <a href="#" id="loginLink">Log in here</a></h5>
+        </div>
+
+    </form>
+</div>
+>>>>>>> 3e8b4f6b46df55a25ab9a29a2fa68ddb13b105a5
