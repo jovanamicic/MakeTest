@@ -163,20 +163,26 @@ public class UserController {
        Error: status Bad request.
     */
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO u){
-        User user = userService.findOne(u.getEmail());
-        if (user == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        if (u.getPassword() != null) {
-            String hashedPassword = MD5Hash.getMD5(u.getPassword());
-            user.setPassword(hashedPassword);
-        }
-        user.setFirstName(u.getFirstName());
-        user.setLastName(u.getLastName());
+    public ResponseEntity<UserDTO> updateUser(@RequestHeader("mtt") String sessionToken, @RequestBody UserDTO u){
+        Session validToken = sessionService.getSession(sessionToken);
+        if (validToken != null) {
+            User user = userService.findOne(u.getEmail());
+            if (user == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            if (u.getPassword() != null) {
+                String hashedPassword = MD5Hash.getMD5(u.getPassword());
+                user.setPassword(hashedPassword);
+            }
+            user.setFirstName(u.getFirstName());
+            user.setLastName(u.getLastName());
 
-        userService.update(user);
-        return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+            userService.update(user);
+            return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
 }

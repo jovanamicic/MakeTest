@@ -152,11 +152,16 @@ public class UserControllerTest {
     @Test
     public void testUpdateUserValid() throws Exception {
         UserRequest createUpdateRequest = createRequest();
+
+        User loggedUser = userService.login(new UserDTO(0, createUpdateRequest.getEmail(), null, null, createUpdateRequest.getPassword(), null)); //saljem samo email i psw
+        String token = loggedUser.getUserSession().getSessionToken();
+
         createUpdateRequest.setLastName("Changed name");
         String content = mapper.writeValueAsString(createUpdateRequest);
 
         MvcResult result = mockMvc.perform(put("/api/users")
                 .content(content)
+                .header("mtt", token)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();

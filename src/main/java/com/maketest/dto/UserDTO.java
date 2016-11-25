@@ -21,7 +21,12 @@ public class UserDTO {
         this.lastName = u.getLastName();
         this.password = u.getPassword();
         Session userS = u.getUserSession();
-        this.userSession = new SessionDTO(userS.getId(),userS.getSessionToken(), userS.getSessionExpire());
+        if(userS == null){
+            this.userSession = null;
+        }
+        else {
+            this.userSession = new SessionDTO(userS.getId(), userS.getSessionToken(), userS.getSessionExpire());
+        }
     }
 
     public UserDTO(){}
