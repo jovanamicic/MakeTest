@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div ng-init="user.showUser()" class="col-xs-4 col-xs-offset-4">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
@@ -36,3 +37,43 @@
         </div>
     </div>
 </div>
+=======
+<div ng-init="user.showUser()" class="col-xs-4 col-xs-offset-4">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">
+            <h1><span class="glyphicon glyphicon-user"></span> Account settings</h1>
+        </div>
+        <div class="panel-body">
+            <!--   <img id="userPhoto" ng-src="{{user.data.profilePhotoRelativePath}}" style="padding-top: 5%; padding-right: 8%; padding-bottom: 5%; padding-left: 8%;">
+             <button id="changePhotoBtn" type="button" class="btn btn-info" style="margin: 10%; padding-left: 8%">Change photo</button>  -->
+            <form name="myForm">
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" class="form-control" id="email" ng-model="user.data.email" disabled>
+                </div>
+                <div class="form-group" data-ng-class="{'has-error':!myForm.fName.$valid}">
+                    <label for="fName">First name:</label>
+                    <input type="text" class="form-control" id="fName" name="fName" ng-model="user.data.firstName">
+                    <span class="help-block" data-ng-show="myForm.fName.$error.required">This is required.</span>
+                </div>
+                <div class="form-group" data-ng-class="{'has-error':!myForm.lName.$valid}">
+                    <label for="lName">Last name:</label>
+                    <input type="text" class="form-control" id="lName" name="lName" ng-model="user.data.lastName">
+                    <span class="help-block" data-ng-show="myForm.lName.$error.required">This is required.</span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                           ng-model="user.data.password">
+                </div>
+                <div class="form-group">
+                    <label for="rPassword">Repeat password:</label>
+                    <input type="password" class="form-control" id="rPassword" name="rPassword"
+                           ng-model="user.data.repeatPassword">
+                </div>
+                <button type="submit" class="btn btn-default pull-right" ng-click="user.update()">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+>>>>>>> 3e8b4f6b46df55a25ab9a29a2fa68ddb13b105a5

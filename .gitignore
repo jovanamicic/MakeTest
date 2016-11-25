@@ -1,3 +1,29 @@
+<<<<<<< HEAD
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+=======
 target/
 !.mvn/wrapper/maven-wrapper.jar
 
@@ -24,3 +50,4 @@ nbdist/
 .nb-gradle/
 
 /src/main/resources/application-milan.properties
+>>>>>>> 3e8b4f6b46df55a25ab9a29a2fa68ddb13b105a5

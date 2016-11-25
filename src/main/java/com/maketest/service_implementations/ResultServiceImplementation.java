@@ -1,3 +1,34 @@
+<<<<<<< HEAD
+package com.maketest.service_implementations;
+
+import com.maketest.model.Result;
+import com.maketest.repository.ResultRepository;
+import com.maketest.service.ResultService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * Created by Jovana Micic on 25-Oct-16.
+ */
+@Service
+public class ResultServiceImplementation implements ResultService {
+
+    @Autowired
+    ResultRepository resultRepository;
+
+    @Override
+    public Result findOne(int id) {
+        Result result = resultRepository.findOne(id);
+        Result retVal = null;
+
+        if (result!= null)
+            retVal = result;
+        else
+            throw new IllegalArgumentException("There is no data with id: " + id);
+        return retVal;
+    }
+}
+=======
 package com.maketest.service_implementations;
 
 import com.maketest.dto.UserAnswerDTO;
@@ -54,3 +85,4 @@ public class ResultServiceImplementation implements ResultService {
         return (int) percentage;
     }
 }
+>>>>>>> 3e8b4f6b46df55a25ab9a29a2fa68ddb13b105a5
